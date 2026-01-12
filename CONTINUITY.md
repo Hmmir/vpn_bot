@@ -1,0 +1,21 @@
+- Goal (incl. success criteria):
+  - Build aiogram-based Telegram bot for GetniusVPN with onboarding, device setup, tariffs, profile, FAQ, referral, and RU/EN language switch.
+- Constraints/Assumptions:
+  - No existing codebase in `C:\Users\alien\Desktop\VPN`.
+  - Use copy adapted from user-provided notes and screenshots.
+  - External integrations (payments, key issuance) are placeholders until provided.
+- Key decisions:
+  - Implement minimal aiogram v3 skeleton with inline/reply keyboards and in-memory language preference.
+- State:
+  - Done:
+    - Added `AGENTS.md` with continuity instructions adapted for GetniusVPN.
+    - Created aiogram bot skeleton with core flows and RU/EN copy.
+  - Now:
+    - Verify flows and collect missing business data (token, pricing, links).
+  - Next:
+    - Wire to real key issuance, payments, and analytics.
+- Open questions (UNCONFIRMED if needed):
+  - Bot token, payment URLs, key issuance method, support contact, channel link.
+  - Final pricing and trial duration.
+- Working set (files/ids/commands):
+  - `AGENTS.md`, `CONTINUITY.md`, `src/*`, `.env.example`, `requirements.txt`
