@@ -78,8 +78,7 @@ RU: Dict[str, str] = {
         "Действует до: {expires}\n\n"
         "Получите +1 месяц за каждого приглашенного друга, который стал PRO.\n"
         "Поделитесь ссылкой:\n"
-        "{ref_link}\n\n"
-        "Если Telegram будет недоступен, напишите нам: {privacy_email}."
+        "{ref_link}"
     ),
     "faq_main": "Выберите вопрос, который вас интересует:",
     "faq_pro": (
@@ -131,8 +130,7 @@ RU: Dict[str, str] = {
     "support_banner": "Поддержка 24/7",
     "support_text": (
         "Напишите нам в поддержку: {support}\n"
-        "Обычно отвечаем в течение нескольких минут.\n"
-        "Если Telegram недоступен: {privacy_email}."
+        "Обычно отвечаем в течение нескольких минут."
     ),
     "channel_banner": "Канал GetniusVPN",
     "channel_text": "Новости, обновления и полезные советы: {channel}",
@@ -200,8 +198,7 @@ EN: Dict[str, str] = {
         "Valid until: {expires}\n\n"
         "Get +1 month for each invited friend who becomes PRO.\n"
         "Share link:\n"
-        "{ref_link}\n\n"
-        "If Telegram is blocked, email us: {privacy_email}."
+        "{ref_link}"
     ),
     "faq_main": "Choose a topic:",
     "faq_pro": "PRO includes max speed, all locations, and advanced features.",
@@ -239,8 +236,7 @@ EN: Dict[str, str] = {
     "support_banner": "Support 24/7",
     "support_text": (
         "Contact support: {support}\n"
-        "We usually respond within minutes.\n"
-        "If Telegram is blocked: {privacy_email}."
+        "We usually respond within minutes."
     ),
     "channel_banner": "GetniusVPN Channel",
     "channel_text": "Updates and tips: {channel}",

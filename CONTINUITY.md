@@ -14,6 +14,7 @@
     - Updated texts/keyboards for RU/EN, 2-column device buttons, tariffs/pro/referral flows.
     - Added support/channel buttons + handlers, support bot (`src/support_bot.py`), and updated `.env.example` + `.gitignore` (add `data/`).
     - Added support/channel images into `assets/` (support.png, channel.png).
+    - Removed privacy email line from profile/support copy.
   - Now:
     - Push changes to GitHub.
     - Redeploy to server and restart bot(s).
