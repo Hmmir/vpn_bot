@@ -247,7 +247,7 @@ EN: Dict[str, str] = {
 }
 
 
-def t(lang: str, key: str, **kwargs: str) -> str:
+def t(lang: str, text_id: str, **kwargs: str) -> str:
     data = EN if lang == "en" else RU
     base = {
         "brand": BRAND_NAME,
@@ -261,5 +261,5 @@ def t(lang: str, key: str, **kwargs: str) -> str:
         "privacy_email": PRIVACY_EMAIL,
     }
     base.update(kwargs)
-    text = data.get(key, "")
+    text = data.get(text_id, "")
     return _fmt(text, **base)
