@@ -27,27 +27,34 @@ PLANS = [
         code="1m",
         title_ru="1 мес",
         title_en="1 month",
-        price_ru="199 ₽",
-        price_en="199 RUB",
+        price_ru="100 ₽",
+        price_en="100 RUB",
         pay_url="https://example.com/pay/1m",
     ),
     Plan(
         code="3m",
         title_ru="3 мес",
         title_en="3 months",
-        price_ru="159 ₽ / мес",
-        price_en="159 RUB / mo",
+        price_ru="270 ₽",
+        price_en="270 RUB",
         pay_url="https://example.com/pay/3m",
     ),
     Plan(
         code="12m",
         title_ru="12 мес",
         title_en="12 months",
-        price_ru="99 ₽ / мес",
-        price_en="99 RUB / mo",
+        price_ru="960 ₽",
+        price_en="960 RUB",
         pay_url="https://example.com/pay/12m",
     ),
 ]
+
+PLAN_DAYS = {
+    "trial": 3,
+    "1m": 30,
+    "3m": 90,
+    "12m": 365,
+}
 
 
 DEVICES_RU = [

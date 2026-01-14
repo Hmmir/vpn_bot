@@ -1,5 +1,9 @@
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def _get_env(name: str, default: str = "") -> str:
     value = os.getenv(name, default)
@@ -17,3 +21,13 @@ V2RAY_URL = _get_env("V2RAY_URL", "https://example.com/v2ray")
 PRIVACY_EMAIL = _get_env("PRIVACY_EMAIL", "support@example.com")
 DEFAULT_KEY = _get_env("DEFAULT_KEY", "vless://REPLACE_ME")
 SUBSCRIPTION_URL = _get_env("SUBSCRIPTION_URL", "https://example.com/sub/REPLACE_ME")
+RENEW_URL = _get_env("RENEW_URL", "")
+
+_admin_raw = _get_env("ADMIN_IDS", "")
+ADMIN_IDS = {
+    int(value)
+    for value in _admin_raw.split(",")
+    if value.strip().isdigit()
+}
+
+REMINDER_INTERVAL_MINUTES = int(_get_env("REMINDER_INTERVAL_MINUTES", "60") or "60")

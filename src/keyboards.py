@@ -6,6 +6,7 @@ from aiogram.types import (
 )
 
 from .data import DEVICES_RU, DEVICES_EN, PLANS
+from .config import RENEW_URL
 
 
 def main_menu_kb(lang: str) -> ReplyKeyboardMarkup:
@@ -28,8 +29,14 @@ def main_menu_kb(lang: str) -> ReplyKeyboardMarkup:
 def device_kb(lang: str) -> InlineKeyboardMarkup:
     rows = []
     devices = DEVICES_EN if lang == "en" else DEVICES_RU
+    row = []
     for code, title in devices:
-        rows.append([InlineKeyboardButton(text=title, callback_data=f"device:{code}")])
+        row.append(InlineKeyboardButton(text=title, callback_data=f"device:{code}"))
+        if len(row) == 2:
+            rows.append(row)
+            row = []
+    if row:
+        rows.append(row)
     if lang == "en":
         rows.append([InlineKeyboardButton(text="Back to menu", callback_data="menu")])
     else:
@@ -102,3 +109,14 @@ def faq_kb(lang: str) -> InlineKeyboardMarkup:
             [InlineKeyboardButton(text="Отменить подписку", callback_data="faq:cancel")],
         ]
     return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+def renew_kb(lang: str) -> InlineKeyboardMarkup:
+    text = "Продлить" if lang != "en" else "Renew"
+    if RENEW_URL:
+        return InlineKeyboardMarkup(
+            inline_keyboard=[[InlineKeyboardButton(text=text, url=RENEW_URL)]]
+        )
+    return InlineKeyboardMarkup(
+        inline_keyboard=[[InlineKeyboardButton(text=text, callback_data="tariffs")]]
+    )
