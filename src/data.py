@@ -12,14 +12,14 @@ class Plan:
 
 
 TRIAL_DAYS = 3
-TRIAL_PRICE_RUB = "10 ₽"
+TRIAL_PRICE_RUB = "10 руб"
 
 PLANS = [
     Plan(
         code="trial",
         title_ru="Пробный период",
         title_en="Trial period",
-        price_ru="10 ₽ за 3 дня",
+        price_ru="10 руб за 3 дня",
         price_en="10 RUB for 3 days",
         pay_url="https://example.com/pay/trial",
     ),
@@ -27,7 +27,7 @@ PLANS = [
         code="1m",
         title_ru="1 мес",
         title_en="1 month",
-        price_ru="100 ₽",
+        price_ru="100 руб",
         price_en="100 RUB",
         pay_url="https://example.com/pay/1m",
     ),
@@ -35,7 +35,7 @@ PLANS = [
         code="3m",
         title_ru="3 мес",
         title_en="3 months",
-        price_ru="270 ₽",
+        price_ru="270 руб",
         price_en="270 RUB",
         pay_url="https://example.com/pay/3m",
     ),
@@ -43,7 +43,7 @@ PLANS = [
         code="12m",
         title_ru="12 мес",
         title_en="12 months",
-        price_ru="960 ₽",
+        price_ru="960 руб",
         price_en="960 RUB",
         pay_url="https://example.com/pay/12m",
     ),
@@ -55,7 +55,6 @@ PLAN_DAYS = {
     "3m": 90,
     "12m": 365,
 }
-
 
 DEVICES_RU = [
     ("android", "Android"),

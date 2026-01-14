@@ -31,3 +31,15 @@ ADMIN_IDS = {
 }
 
 REMINDER_INTERVAL_MINUTES = int(_get_env("REMINDER_INTERVAL_MINUTES", "60") or "60")
+
+SUPPORT_BOT_TOKEN = _get_env("SUPPORT_BOT_TOKEN", "")
+_support_chat_raw = _get_env("SUPPORT_ADMIN_CHAT_ID", "")
+SUPPORT_ADMIN_CHAT_ID = (
+    int(_support_chat_raw) if _support_chat_raw.lstrip("-").isdigit() else None
+)
+_support_admin_raw = _get_env("SUPPORT_ADMIN_IDS", "")
+SUPPORT_ADMIN_IDS = {
+    int(value)
+    for value in _support_admin_raw.split(",")
+    if value.strip().lstrip("-").isdigit()
+}

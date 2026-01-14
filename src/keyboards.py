@@ -1,12 +1,25 @@
+from __future__ import annotations
+
 from aiogram.types import (
-    ReplyKeyboardMarkup,
-    KeyboardButton,
-    InlineKeyboardMarkup,
     InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    KeyboardButton,
+    ReplyKeyboardMarkup,
 )
 
-from .data import DEVICES_RU, DEVICES_EN, PLANS
-from .config import RENEW_URL
+from .config import CHANNEL, RENEW_URL, SUPPORT_BOT
+from .data import DEVICES_EN, DEVICES_RU, PLANS
+
+
+def _tg_url(handle: str) -> str:
+    value = (handle or "").strip()
+    if not value:
+        return ""
+    if value.startswith("http://") or value.startswith("https://"):
+        return value
+    if value.startswith("@"):
+        return f"https://t.me/{value[1:]}"
+    return f"https://t.me/{value}"
 
 
 def main_menu_kb(lang: str) -> ReplyKeyboardMarkup:
@@ -14,13 +27,15 @@ def main_menu_kb(lang: str) -> ReplyKeyboardMarkup:
         buttons = [
             ["Install VPN", "Plans"],
             ["Profile", "Questions"],
-            ["Invite a friend", "Switch to Russian"],
+            ["Invite a friend", "Channel"],
+            ["Support", "Switch to Russian"],
         ]
     else:
         buttons = [
             ["Установить VPN", "Тарифы"],
             ["Профиль", "Вопросы"],
-            ["Пригласить друга", "Switch to English"],
+            ["Пригласить друга", "Канал"],
+            ["Поддержка", "Switch to English"],
         ]
     keyboard = [[KeyboardButton(text=text) for text in row] for row in buttons]
     return ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
@@ -112,11 +127,31 @@ def faq_kb(lang: str) -> InlineKeyboardMarkup:
 
 
 def renew_kb(lang: str) -> InlineKeyboardMarkup:
-    text = "Продлить" if lang != "en" else "Renew"
+    text = "Renew" if lang == "en" else "Продлить"
     if RENEW_URL:
         return InlineKeyboardMarkup(
             inline_keyboard=[[InlineKeyboardButton(text=text, url=RENEW_URL)]]
         )
     return InlineKeyboardMarkup(
         inline_keyboard=[[InlineKeyboardButton(text=text, callback_data="tariffs")]]
+    )
+
+
+def support_kb(lang: str) -> InlineKeyboardMarkup | None:
+    url = _tg_url(SUPPORT_BOT)
+    if not url:
+        return None
+    text = "Contact support" if lang == "en" else "Написать в поддержку"
+    return InlineKeyboardMarkup(
+        inline_keyboard=[[InlineKeyboardButton(text=text, url=url)]]
+    )
+
+
+def channel_kb(lang: str) -> InlineKeyboardMarkup | None:
+    url = _tg_url(CHANNEL)
+    if not url:
+        return None
+    text = "Open channel" if lang == "en" else "Открыть канал"
+    return InlineKeyboardMarkup(
+        inline_keyboard=[[InlineKeyboardButton(text=text, url=url)]]
     )

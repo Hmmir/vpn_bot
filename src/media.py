@@ -13,6 +13,8 @@ ASSET_MAP = {
     "pro": "pro.png",
     "referral": "referral.png",
     "steps": "steps.png",
+    "support": "support.png",
+    "channel": "channel.png",
 }
 
 

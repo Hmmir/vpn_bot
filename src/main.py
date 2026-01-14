@@ -25,9 +25,11 @@ from .keyboards import (
     plans_kb,
     faq_kb,
     renew_kb,
+    support_kb,
+    channel_kb,
 )
 from .texts import t
-from .data import DEVICES_RU, DEVICES_EN
+from .data import DEVICES_RU, DEVICES_EN, PLAN_DAYS
 from .media import asset_file
 from .storage import (
     init_db,
@@ -37,7 +39,6 @@ from .storage import (
     set_subscription,
     upsert_user,
 )
-from .data import PLAN_DAYS
 
 
 router = Router()
@@ -138,6 +139,32 @@ async def invite_friend(message: Message) -> None:
     )
 
 
+@router.message(F.text.in_(["Поддержка", "Support"]))
+async def show_support(message: Message) -> None:
+    lang = get_lang(message.from_user.id)
+    upsert_user(message.from_user.id, lang)
+    await send_asset(
+        message,
+        "support",
+        t(lang, "support_banner"),
+        reply_markup=support_kb(lang),
+    )
+    await message.answer(t(lang, "support_text"), reply_markup=support_kb(lang))
+
+
+@router.message(F.text.in_(["Канал", "Channel"]))
+async def show_channel(message: Message) -> None:
+    lang = get_lang(message.from_user.id)
+    upsert_user(message.from_user.id, lang)
+    await send_asset(
+        message,
+        "channel",
+        t(lang, "channel_banner"),
+        reply_markup=channel_kb(lang),
+    )
+    await message.answer(t(lang, "channel_text"), reply_markup=channel_kb(lang))
+
+
 @router.message(F.text == "Switch to English")
 async def switch_to_english(message: Message) -> None:
     set_lang(message.from_user.id, "en")
@@ -231,18 +258,22 @@ async def set_expire_cmd(message: Message) -> None:
         await message.answer("USER_ID должен быть числом.")
         return
     date_str = " ".join(parts[2:])
+    expires = None
     for fmt in ("%Y-%m-%d", "%Y-%m-%d %H:%M"):
         try:
-            expires = datetime.strptime(date_str, fmt)
-            expires = expires.replace(tzinfo=timezone.utc)
+            expires = datetime.strptime(date_str, fmt).replace(tzinfo=timezone.utc)
             break
         except ValueError:
-            expires = None
+            continue
     if not expires:
-        await message.answer("Неверный формат даты. Пример: 2026-01-20 или 2026-01-20 12:00")
+        await message.answer(
+            "Неверный формат даты. Пример: 2026-01-20 или 2026-01-20 12:00"
+        )
         return
     set_subscription(user_id, expires.isoformat(timespec="seconds"))
-    await message.answer(f"Готово. Подписка до {expires.isoformat(timespec='minutes')}.")
+    await message.answer(
+        f"Готово. Подписка до {expires.isoformat(timespec='minutes')}."
+    )
 
 
 @router.message(Command("set_plan"))
@@ -265,7 +296,9 @@ async def set_plan_cmd(message: Message) -> None:
         return
     expires = datetime.now(timezone.utc) + timedelta(days=days)
     set_subscription(user_id, expires.isoformat(timespec="seconds"), plan_code=plan_code)
-    await message.answer(f"Готово. План {plan_code}, до {expires.isoformat(timespec='minutes')}.")
+    await message.answer(
+        f"Готово. План {plan_code}, до {expires.isoformat(timespec='minutes')}."
+    )
 
 
 async def reminder_loop(bot: Bot) -> None:
