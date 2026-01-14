@@ -57,6 +57,20 @@ def init_db() -> None:
             )
             """
         )
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS user_keys (
+                user_id INTEGER PRIMARY KEY,
+                vless_uri TEXT,
+                sub_url TEXT,
+                client_id TEXT,
+                email TEXT,
+                sub_id TEXT,
+                updated_at TEXT NOT NULL,
+                FOREIGN KEY(user_id) REFERENCES users(user_id)
+            )
+            """
+        )
 
 
 def upsert_user(user_id: int, lang: str) -> None:
@@ -124,6 +138,42 @@ def set_status_expired(user_id: int) -> None:
             "UPDATE subscriptions SET status = 'expired', updated_at = ? WHERE user_id = ?",
             (_now_iso(), user_id),
         )
+
+
+def set_user_key(
+    user_id: int,
+    vless_uri: str,
+    sub_url: str,
+    client_id: str = "",
+    email: str = "",
+    sub_id: str = "",
+) -> None:
+    with _connect() as conn:
+        conn.execute(
+            """
+            INSERT INTO user_keys (user_id, vless_uri, sub_url, client_id, email, sub_id, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(user_id) DO UPDATE SET
+                vless_uri = excluded.vless_uri,
+                sub_url = excluded.sub_url,
+                client_id = excluded.client_id,
+                email = excluded.email,
+                sub_id = excluded.sub_id,
+                updated_at = excluded.updated_at
+            """,
+            (user_id, vless_uri, sub_url, client_id, email, sub_id, _now_iso()),
+        )
+
+
+def get_user_key(user_id: int) -> tuple[str, str]:
+    with _connect() as conn:
+        row = conn.execute(
+            "SELECT vless_uri, sub_url FROM user_keys WHERE user_id = ?",
+            (user_id,),
+        ).fetchone()
+    if not row:
+        return "", ""
+    return row["vless_uri"] or "", row["sub_url"] or ""
 
 
 def list_due_reminders(now: datetime) -> List[Reminder]:

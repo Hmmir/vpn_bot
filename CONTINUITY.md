@@ -15,8 +15,10 @@
     - Added support/channel buttons + handlers, support bot (`src/support_bot.py`), and updated `.env.example` + `.gitignore` (add `data/`).
     - Added support/channel images into `assets/` (support.png, channel.png).
     - Removed privacy email line from profile/support copy.
+    - Added 3x-ui API client scaffolding and admin issue command (`/issue`, `/xui_inbounds`).
   - Now:
     - Push changes to GitHub.
+    - Configure XUI env vars and test `/issue`.
     - Redeploy to server and restart bot(s).
   - Next:
     - Wire payments + auto key issuance; add runbook/systemd and tests.
