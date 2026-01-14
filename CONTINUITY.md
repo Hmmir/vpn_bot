@@ -1,21 +1,26 @@
 - Goal (incl. success criteria):
-  - Build aiogram-based Telegram bot for GetniusVPN with onboarding, device setup, tariffs, profile, FAQ, referral, and RU/EN language switch.
+  - Deliver GetniusVPN Telegram bot with onboarding, device setup, tariffs, profile, FAQ, referral, RU/EN, media cards, and automated expiry reminders; add support bot + channel integration.
 - Constraints/Assumptions:
-  - No existing codebase in `C:\Users\alien\Desktop\VPN`.
-  - Use copy adapted from user-provided notes and screenshots.
-  - External integrations (payments, key issuance) are placeholders until provided.
+  - Keep secrets out of git; use `.env` on server.
+  - Use user-provided screenshots/copy; match competitor flow (2-column buttons) but rephrase branding.
+  - Payments/key issuance are placeholders until provided.
 - Key decisions:
-  - Implement minimal aiogram v3 skeleton with inline/reply keyboards and in-memory language preference.
+  - Aiogram v3 bot; SQLite storage at `data/bot.db`; hourly reminder loop.
+  - Media assets in `assets/` and helper mapping in `src/media.py`.
 - State:
   - Done:
-    - Added `AGENTS.md` with continuity instructions adapted for GetniusVPN.
-    - Created aiogram bot skeleton with core flows and RU/EN copy.
+    - Added media cards (welcome/pricing/pro/referral/steps) and updated bot flows to send images.
+    - Added `python-dotenv`, `src/storage.py` for reminders, admin commands (`/set_expire`, `/set_plan`).
+    - Updated texts/keyboards for RU/EN, 2-column device buttons, tariffs/pro/referral flows.
+    - Added support/channel buttons + handlers, support bot (`src/support_bot.py`), and updated `.env.example` + `.gitignore` (add `data/`).
+    - Added support/channel images into `assets/` (support.png, channel.png).
   - Now:
-    - Verify flows and collect missing business data (token, pricing, links).
+    - Push changes to GitHub.
+    - Redeploy to server and restart bot(s).
   - Next:
-    - Wire to real key issuance, payments, and analytics.
+    - Wire payments + auto key issuance; add runbook/systemd and tests.
 - Open questions (UNCONFIRMED if needed):
-  - Bot token, payment URLs, key issuance method, support contact, channel link.
-  - Final pricing and trial duration.
+  - Support bot token/username, support admin chat ID, channel link.
+  - Final pricing, trial duration, renewal URL.
 - Working set (files/ids/commands):
-  - `AGENTS.md`, `CONTINUITY.md`, `src/*`, `.env.example`, `requirements.txt`
+  - `src/main.py`, `src/texts.py`, `src/keyboards.py`, `src/media.py`, `src/storage.py`, `.env.example`, `assets/*`
