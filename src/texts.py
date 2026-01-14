@@ -52,6 +52,7 @@ RU: Dict[str, str] = {
         "1. Установите любой клиент с поддержкой VLESS.\n"
         "2. Вставьте ключ в приложение.\n"
         "3. Выберите локацию и подключитесь.\n\n"
+        "Альтернативные клиенты: Happ / V2RayTUN.\n"
         "Нужна помощь? Напишите в поддержку: {support}."
     ),
     "tariffs_banner": "Тарифы GetniusVPN",
@@ -73,7 +74,8 @@ RU: Dict[str, str] = {
     "profile": (
         "Вы используете {brand}\n\n"
         "Ваш ключ:\n"
-        "{key}\n\n"
+        "{key}\n"
+        "Нажмите на ключ, чтобы скопировать.\n\n"
         "Потребление трафика: {traffic}\n"
         "Действует до: {expires}\n\n"
         "Получите +1 месяц за каждого приглашенного друга, который стал PRO.\n"
@@ -172,6 +174,7 @@ EN: Dict[str, str] = {
         "1. Install any client that supports VLESS.\n"
         "2. Paste the key into the app.\n"
         "3. Choose a location and connect.\n\n"
+        "Alternative clients: Happ / V2RayTUN.\n"
         "Need help? Contact support: {support}."
     ),
     "tariffs_banner": "GetniusVPN Plans",
@@ -193,7 +196,8 @@ EN: Dict[str, str] = {
     "profile": (
         "You use {brand}\n\n"
         "Your key:\n"
-        "{key}\n\n"
+        "{key}\n"
+        "Tap the key to copy.\n\n"
         "Traffic used: {traffic}\n"
         "Valid until: {expires}\n\n"
         "Get +1 month for each invited friend who becomes PRO.\n"

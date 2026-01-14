@@ -1,0 +1,15 @@
+[Unit]
+Description=GetniusVPN Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=web
+WorkingDirectory=/home/web/vpn_bot
+EnvironmentFile=/home/web/vpn_bot/.env
+ExecStart=/home/web/vpn_bot/.venv/bin/python -m src.main
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

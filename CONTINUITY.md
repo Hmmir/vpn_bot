@@ -16,9 +16,11 @@
     - Added support/channel images into `assets/` (support.png, channel.png).
     - Removed privacy email line from profile/support copy.
     - Added 3x-ui API client scaffolding and admin issue command (`/issue`, `/xui_inbounds`).
+    - Added webhook handler and systemd unit templates for main/support/webhook services.
+    - Added upsert logic for existing clients via 3x-ui API.
   - Now:
     - Push changes to GitHub.
-    - Configure XUI env vars and test `/issue`.
+    - Configure XUI + webhook env vars and test `/issue` + webhook.
     - Redeploy to server and restart bot(s).
   - Next:
     - Wire payments + auto key issuance; add runbook/systemd and tests.

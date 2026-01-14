@@ -2,7 +2,6 @@ import asyncio
 from datetime import datetime, timedelta, timezone
 import logging
 from typing import Dict, Optional
-import uuid
 
 from aiogram import Bot, Dispatcher, Router, F
 from aiogram.filters import CommandStart, Command
@@ -17,18 +16,6 @@ from .config import (
     SUBSCRIPTION_URL,
     ADMIN_IDS,
     REMINDER_INTERVAL_MINUTES,
-    XUI_BASE_URL,
-    XUI_USERNAME,
-    XUI_PASSWORD,
-    XUI_API_PATH,
-    XUI_INBOUND_ID,
-    XUI_FLOW,
-    XUI_TOTAL_GB,
-    XUI_LIMIT_IP,
-    XUI_PUBLIC_HOST,
-    XUI_PUBLIC_PORT,
-    XUI_SUB_BASE_URL,
-    XUI_SSL_VERIFY,
 )
 from .keyboards import (
     main_menu_kb,
@@ -54,13 +41,12 @@ from .storage import (
     get_user_key as get_user_key_from_db,
     set_user_key,
 )
-from .xui_api import XuiApi, build_vless_uri, build_sub_url
+from .issue import issue_access, list_inbounds
 
 
 router = Router()
 user_lang: Dict[int, str] = {}
 logging.basicConfig(level=logging.INFO)
-xui_client: Optional[XuiApi] = None
 
 
 def get_lang(user_id: int) -> str:
@@ -88,40 +74,6 @@ def is_admin(user_id: int) -> bool:
     return user_id in ADMIN_IDS
 
 
-def _parse_inbound_id(value: str) -> Optional[int]:
-    return int(value) if value.strip().isdigit() else None
-
-
-def _public_port() -> Optional[int]:
-    if not XUI_PUBLIC_PORT:
-        return None
-    if XUI_PUBLIC_PORT.strip().isdigit():
-        return int(XUI_PUBLIC_PORT.strip())
-    return None
-
-
-def _public_host() -> str:
-    if XUI_PUBLIC_HOST:
-        return XUI_PUBLIC_HOST
-    if XUI_BASE_URL.startswith("http"):
-        return XUI_BASE_URL.split("://", 1)[1].split(":", 1)[0]
-    return ""
-
-
-async def ensure_xui() -> Optional[XuiApi]:
-    global xui_client
-    if xui_client:
-        return xui_client
-    if not (XUI_BASE_URL and XUI_USERNAME and XUI_PASSWORD):
-        return None
-    xui_client = XuiApi(
-        XUI_BASE_URL,
-        XUI_USERNAME,
-        XUI_PASSWORD,
-        api_path=XUI_API_PATH or "/panel/api",
-        verify_ssl=XUI_SSL_VERIFY,
-    )
-    return xui_client
 
 
 async def send_asset(
@@ -365,13 +317,9 @@ async def set_plan_cmd(message: Message) -> None:
 async def xui_inbounds_cmd(message: Message) -> None:
     if not is_admin(message.from_user.id):
         return
-    xui = await ensure_xui()
-    if not xui:
-        await message.answer("XUI не настроен. Проверьте XUI_BASE_URL и учетные данные.")
-        return
-    items = await xui.list_inbounds()
+    items = await list_inbounds()
     if not items:
-        await message.answer("Список инбаундов пуст.")
+        await message.answer("Список инбаундов пуст или XUI не настроен.")
         return
     lines = ["Inbounds:"]
     for inbound in items:
@@ -401,58 +349,15 @@ async def issue_cmd(message: Message) -> None:
     if not days:
         await message.answer("План должен быть trial, 1m, 3m или 12m.")
         return
-    inbound_id = _parse_inbound_id(XUI_INBOUND_ID)
-    if inbound_id is None:
-        await message.answer("XUI_INBOUND_ID не задан.")
+    try:
+        key = await issue_access(user_id, plan_code)
+    except Exception as exc:
+        await message.answer(f"XUI ошибка: {exc}")
         return
-    xui = await ensure_xui()
-    if not xui:
-        await message.answer("XUI не настроен. Проверьте XUI_BASE_URL и учетные данные.")
-        return
-
-    expires = datetime.now(timezone.utc) + timedelta(days=days)
-    expiry_ms = int(expires.timestamp() * 1000)
-    client_id = str(uuid.uuid4())
-    email = f"tg_{user_id}"
-    sub_id = uuid.uuid4().hex[:16]
-    client_settings = {
-        "id": client_id,
-        "email": email,
-        "limitIp": XUI_LIMIT_IP,
-        "totalGB": XUI_TOTAL_GB,
-        "expiryTime": expiry_ms,
-        "enable": True,
-        "flow": XUI_FLOW or None,
-        "tgId": str(user_id),
-        "subId": sub_id,
-    }
-    # Remove None values to keep payload clean.
-    client_settings = {k: v for k, v in client_settings.items() if v is not None}
-    result = await xui.add_client(inbound_id, client_settings)
-    if not result.get("success"):
-        await message.answer(f"XUI ошибка: {result}")
-        return
-    inbound = await xui.get_inbound(inbound_id)
-    if not inbound:
-        await message.answer("Не удалось получить inbound для сборки ссылки.")
-        return
-    host = _public_host()
-    port = _public_port()
-    vless_uri = build_vless_uri(
-        inbound,
-        client_id,
-        email,
-        host=host,
-        flow=XUI_FLOW,
-        public_port=port,
-    )
-    sub_url = build_sub_url(XUI_SUB_BASE_URL or XUI_BASE_URL, sub_id)
-    set_user_key(user_id, vless_uri, sub_url, client_id, email, sub_id)
-    set_subscription(user_id, expires.isoformat(timespec="seconds"), plan_code=plan_code)
     await message.answer(
         "Готово. Доступ выдан.\n\n"
-        f"Ключ:\n{vless_uri}\n\n"
-        f"Подписка:\n{sub_url}"
+        f"Ключ:\n{key.vless_uri}\n\n"
+        f"Подписка:\n{key.sub_url}"
     )
 
 

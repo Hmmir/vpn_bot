@@ -31,6 +31,24 @@ class XuiInbound:
                 return {}
         return raw
 
+    @property
+    def settings(self) -> dict[str, Any]:
+        raw = self.raw.get("settings") or {}
+        if isinstance(raw, str):
+            try:
+                return json.loads(raw)
+            except json.JSONDecodeError:
+                return {}
+        return raw
+
+    @property
+    def clients(self) -> list[dict[str, Any]]:
+        settings = self.settings
+        clients = settings.get("clients") or []
+        if isinstance(clients, list):
+            return clients
+        return []
+
 
 @dataclass(frozen=True)
 class XuiKey:
@@ -99,6 +117,18 @@ class XuiApi:
             "settings": json.dumps({"clients": [client_settings]}),
         }
         return await self._request("POST", "/inbounds/addClient", payload)
+
+    async def update_client(
+        self,
+        client_id: str,
+        inbound_id: int,
+        client_settings: dict[str, Any],
+    ) -> dict:
+        payload = {
+            "id": inbound_id,
+            "settings": json.dumps({"clients": [client_settings]}),
+        }
+        return await self._request("POST", f"/inbounds/updateClient/{client_id}", payload)
 
 
 def build_vless_uri(
