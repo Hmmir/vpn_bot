@@ -58,11 +58,11 @@ RU: Dict[str, str] = {
     "tariffs": (
         "Тарифы:\n"
         "- 1 мес: 100 руб\n"
-        "- 3 мес: 270 руб\n"
-        "- 12 мес: 960 руб\n\n"
-        f"Пробный период: {TRIAL_PRICE_RUB} за {TRIAL_DAYS} дня.\n"
+        "- 3 мес: 250 руб\n"
+        "- 12 мес: 900 руб\n\n"
+        f"Пробный период: {TRIAL_PRICE_RUB} за {TRIAL_DAYS} дней (спишем {TRIAL_PRICE_RUB} за привязку карты).\n"
         "PRO включает все функции и максимальную скорость.\n"
-        "Если оплата прошла, а ключ не пришёл — напишите в поддержку."
+        "Если оплата прошла, а ключ не пришёл - напишите в поддержку."
     ),
     "pro_features": (
         "PRO-функции:\n"
@@ -173,11 +173,11 @@ EN: Dict[str, str] = {
     "tariffs": (
         "Available plans:\n"
         "- 1 month: 100 RUB\n"
-        "- 3 months: 270 RUB\n"
-        "- 12 months: 960 RUB\n\n"
-        f"Trial: {TRIAL_PRICE_RUB} for {TRIAL_DAYS} days.\n"
+        "- 3 months: 250 RUB\n"
+        "- 12 months: 900 RUB\n\n"
+        f"Trial: {TRIAL_PRICE_RUB} for {TRIAL_DAYS} days (card verification charge).\n"
         "PRO includes all features and max speed.\n"
-        "If payment went through but no key arrived — contact support."
+        "If payment went through but no key arrived - contact support."
     ),
     "pro_features": (
         "PRO features:\n"

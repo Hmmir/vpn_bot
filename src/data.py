@@ -11,16 +11,16 @@ class Plan:
     pay_url: str
 
 
-TRIAL_DAYS = 3
-TRIAL_PRICE_RUB = "10 руб"
+TRIAL_DAYS = 7
+TRIAL_PRICE_RUB = "25 руб"
 
 PLANS = [
     Plan(
         code="trial",
         title_ru="Пробный период",
         title_en="Trial period",
-        price_ru="10 руб за 3 дня",
-        price_en="10 RUB for 3 days",
+        price_ru="25 руб за 7 дней",
+        price_en="25 RUB for 7 days",
         pay_url="https://example.com/pay/trial",
     ),
     Plan(
@@ -35,22 +35,22 @@ PLANS = [
         code="3m",
         title_ru="3 мес",
         title_en="3 months",
-        price_ru="270 руб",
-        price_en="270 RUB",
+        price_ru="250 руб",
+        price_en="250 RUB",
         pay_url="https://example.com/pay/3m",
     ),
     Plan(
         code="12m",
         title_ru="12 мес",
         title_en="12 months",
-        price_ru="960 руб",
-        price_en="960 RUB",
+        price_ru="900 руб",
+        price_en="900 RUB",
         pay_url="https://example.com/pay/12m",
     ),
 ]
 
 PLAN_DAYS = {
-    "trial": 3,
+    "trial": 7,
     "1m": 30,
     "3m": 90,
     "12m": 365,

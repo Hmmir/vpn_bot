@@ -29,13 +29,13 @@
     - Added healthcheck/updatecheck envs + XUI timeout.
     - Added support ticket IDs and DB-backed language restore.
     - Shortened onboarding and reduced duplicate messages for support/channel/tariffs.
+    - Updated pricing copy: trial 7 days/25 RUB, 3m 250, 12m 900.
     - Adjusted /start flow: menu line first, welcome text includes device prompt.
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.
-    - Push latest changes to GitHub.
+    - Pull latest changes on server and restart bot(s).
     - Configure `.env` on server with `XUI_INBOUND_IDS`, `CHECK_URL`, XUI timeout, healthcheck/updatecheck vars.
-    - Redeploy to server and restart bot(s) + timers.
   - Next:
     - Wire payments + auto key issuance; add runbook/tests.
 - Open questions (UNCONFIRMED if needed):
