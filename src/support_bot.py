@@ -7,7 +7,7 @@ from aiogram import Bot, Dispatcher, Router, F
 from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
 
-from .config import SUPPORT_BOT_TOKEN, SUPPORT_ADMIN_CHAT_ID, SUPPORT_ADMIN_IDS, BRAND_NAME
+from .config import SUPPORT_BOT_TOKEN, SUPPORT_ADMIN_CHAT_ID, SUPPORT_ADMIN_IDS, BRAND_NAME, HAPP_URL, V2RAYTUN_URL
 
 
 router = Router()
@@ -56,12 +56,18 @@ async def support_start(message: Message) -> None:
     if lang == "en":
         text = (
             f"Welcome to {BRAND_NAME} Support.\n"
-            "Send your message and we will reply soon."
+            "Send your message and we will reply soon.\n\n"
+            "Quick links:\n"
+            f"Happ: {HAPP_URL}\n"
+            f"V2RayTUN: {V2RAYTUN_URL}"
         )
     else:
         text = (
             f"Привет! Это поддержка {BRAND_NAME}.\n"
-            "Напишите ваш вопрос — мы ответим в ближайшее время."
+            "Напишите ваш вопрос - мы ответим в ближайшее время.\n\n"
+            "Быстрые ссылки:\n"
+            f"Happ: {HAPP_URL}\n"
+            f"V2RayTUN: {V2RAYTUN_URL}"
         )
     await message.answer(text)
 

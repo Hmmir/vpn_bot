@@ -19,6 +19,14 @@ BASE_URL = _get_env("BASE_URL", "https://example.com")
 ONE_CLICK_URL = _get_env("ONE_CLICK_URL", "https://example.com/one-click")
 V2RAY_URL = _get_env("V2RAY_URL", "https://example.com/v2ray")
 CHECK_URL = _get_env("CHECK_URL", "https://check-host.net/check-ping")
+HAPP_URL = _get_env(
+    "HAPP_URL",
+    "https://play.google.com/store/apps/details?id=com.happproxy",
+)
+V2RAYTUN_URL = _get_env(
+    "V2RAYTUN_URL",
+    "https://play.google.com/store/apps/details?id=com.v2raytun.android",
+)
 PRIVACY_EMAIL = _get_env("PRIVACY_EMAIL", "support@example.com")
 DEFAULT_KEY = _get_env("DEFAULT_KEY", "vless://REPLACE_ME")
 SUBSCRIPTION_URL = _get_env("SUBSCRIPTION_URL", "https://example.com/sub/REPLACE_ME")

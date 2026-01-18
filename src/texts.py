@@ -27,25 +27,25 @@ RU: Dict[str, str] = {
     "steps_banner": "Подключение в 3 шага",
     "android_setup": (
         "Для настройки VPN на Android:\n"
-        "1. Установите Happ из Google Play или APK.\n"
+        "1. Установите Happ: {happ_url}\n"
         "2. Нажмите кнопку ниже, чтобы подключиться в 1 клик.\n\n"
         "Если автоматическая настройка не сработала:\n"
         "1. Скопируйте ключ, нажав на него:\n"
         "{key}\n"
         "2. Откройте Happ и нажмите «Вставить/Из буфера».\n"
         "3. Выберите локацию и подключитесь.\n\n"
-        "Если приложение не работает, попробуйте V2RayTUN."
+        "Если приложение не работает, попробуйте V2RayTUN: {v2raytun_url}"
     ),
     "android_setup_no_key": (
         "Для настройки VPN на Android:\n"
-        "1. Установите Happ из Google Play или APK.\n"
+        "1. Установите Happ: {happ_url}\n"
         "2. Оплатите тариф - ключ появится в профиле.\n"
         "3. Вставьте ключ и подключитесь.\n\n"
-        "Если приложение не работает, попробуйте V2RayTUN."
+        "Если приложение не работает, попробуйте V2RayTUN: {v2raytun_url}"
     ),
     "android_v2ray": (
         "Для настройки VPN через V2RayTUN:\n"
-        "1. Установите V2RayTUN из Google Play или APK.\n"
+        "1. Установите V2RayTUN: {v2raytun_url}\n"
         "2. Нажмите кнопку ниже, чтобы подключиться в 1 клик.\n\n"
         "Если автоматическая настройка не сработала:\n"
         "1. Скопируйте ключ:\n"
@@ -55,7 +55,7 @@ RU: Dict[str, str] = {
     ),
     "android_v2ray_no_key": (
         "Для настройки VPN через V2RayTUN:\n"
-        "1. Установите V2RayTUN из Google Play или APK.\n"
+        "1. Установите V2RayTUN: {v2raytun_url}\n"
         "2. Оплатите тариф - ключ появится в профиле.\n"
         "3. Импортируйте ключ и подключитесь."
     ),
@@ -64,7 +64,9 @@ RU: Dict[str, str] = {
         "1. Установите клиент с поддержкой VLESS.\n"
         "2. Вставьте ключ в приложение.\n"
         "3. Выберите локацию и подключитесь.\n\n"
-        "Альтернативные клиенты: Happ / V2RayTUN.\n"
+        "Альтернативные клиенты:\n"
+        "Happ: {happ_url}\n"
+        "V2RayTUN: {v2raytun_url}\n"
         "Нужна помощь? Напишите в поддержку: {support}."
     ),
     "generic_setup_no_key": (
@@ -72,7 +74,9 @@ RU: Dict[str, str] = {
         "1. Установите клиент с поддержкой VLESS.\n"
         "2. Оплатите тариф - ключ появится в профиле.\n"
         "3. Вставьте ключ и подключитесь.\n\n"
-        "Альтернативные клиенты: Happ / V2RayTUN.\n"
+        "Альтернативные клиенты:\n"
+        "Happ: {happ_url}\n"
+        "V2RayTUN: {v2raytun_url}\n"
         "Нужна помощь? Напишите в поддержку: {support}."
     ),
     "tariffs_banner": "Тарифы GetniusVPN",
@@ -163,25 +167,25 @@ EN: Dict[str, str] = {
     "steps_banner": "Connect in 3 steps",
     "android_setup": (
         "Android setup:\n"
-        "1. Install Happ from Google Play or APK.\n"
+        "1. Install Happ: {happ_url}\n"
         "2. Tap the button below to connect in 1 click.\n\n"
         "If auto-setup fails:\n"
         "1. Copy your key:\n"
         "{key}\n"
         "2. Open Happ and tap “Paste/From clipboard”.\n"
         "3. Choose a location and connect.\n\n"
-        "If it still fails, try V2RayTUN."
+        "If it still fails, try V2RayTUN: {v2raytun_url}"
     ),
     "android_setup_no_key": (
         "Android setup:\n"
-        "1. Install Happ from Google Play or APK.\n"
+        "1. Install Happ: {happ_url}\n"
         "2. Pay for a plan - the key will appear in your profile.\n"
         "3. Paste the key and connect.\n\n"
-        "If it still fails, try V2RayTUN."
+        "If it still fails, try V2RayTUN: {v2raytun_url}"
     ),
     "android_v2ray": (
         "V2RayTUN setup:\n"
-        "1. Install V2RayTUN from Google Play or APK.\n"
+        "1. Install V2RayTUN: {v2raytun_url}\n"
         "2. Tap the button below to connect in 1 click.\n\n"
         "If auto-setup fails:\n"
         "1. Copy your key:\n"
@@ -191,7 +195,7 @@ EN: Dict[str, str] = {
     ),
     "android_v2ray_no_key": (
         "V2RayTUN setup:\n"
-        "1. Install V2RayTUN from Google Play or APK.\n"
+        "1. Install V2RayTUN: {v2raytun_url}\n"
         "2. Pay for a plan - the key will appear in your profile.\n"
         "3. Import the key and connect."
     ),
@@ -200,7 +204,9 @@ EN: Dict[str, str] = {
         "1. Install any client that supports VLESS.\n"
         "2. Paste the key into the app.\n"
         "3. Choose a location and connect.\n\n"
-        "Alternative clients: Happ / V2RayTUN.\n"
+        "Alternative clients:\n"
+        "Happ: {happ_url}\n"
+        "V2RayTUN: {v2raytun_url}\n"
         "Need help? Contact support: {support}."
     ),
     "generic_setup_no_key": (
@@ -208,7 +214,9 @@ EN: Dict[str, str] = {
         "1. Install any client that supports VLESS.\n"
         "2. Pay for a plan - the key will appear in your profile.\n"
         "3. Paste the key and connect.\n\n"
-        "Alternative clients: Happ / V2RayTUN.\n"
+        "Alternative clients:\n"
+        "Happ: {happ_url}\n"
+        "V2RayTUN: {v2raytun_url}\n"
         "Need help? Contact support: {support}."
     ),
     "tariffs_banner": "GetniusVPN Plans",
@@ -298,6 +306,8 @@ def t(lang: str, text_id: str, **kwargs: str) -> str:
         "one_click_url": ONE_CLICK_URL,
         "v2ray_url": V2RAY_URL,
         "privacy_email": PRIVACY_EMAIL,
+        "happ_url": kwargs.get("happ_url", ""),
+        "v2raytun_url": kwargs.get("v2raytun_url", ""),
     }
     base.update(kwargs)
     text = data.get(text_id, "")
