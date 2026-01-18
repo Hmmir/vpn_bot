@@ -36,6 +36,13 @@ RU: Dict[str, str] = {
         "3. Выберите локацию и подключитесь.\n\n"
         "Если приложение не работает, попробуйте V2RayTUN."
     ),
+    "android_setup_no_key": (
+        "Для настройки VPN на Android:\n"
+        "1. Установите Happ из Google Play или APK.\n"
+        "2. Оплатите тариф - ключ появится в профиле.\n"
+        "3. Вставьте ключ и подключитесь.\n\n"
+        "Если приложение не работает, попробуйте V2RayTUN."
+    ),
     "android_v2ray": (
         "Для настройки VPN через V2RayTUN:\n"
         "1. Установите V2RayTUN из Google Play или APK.\n"
@@ -46,11 +53,25 @@ RU: Dict[str, str] = {
         "2. Откройте V2RayTUN, нажмите «+» -> «Импорт из буфера».\n"
         "3. Выберите локацию и подключитесь."
     ),
+    "android_v2ray_no_key": (
+        "Для настройки VPN через V2RayTUN:\n"
+        "1. Установите V2RayTUN из Google Play или APK.\n"
+        "2. Оплатите тариф - ключ появится в профиле.\n"
+        "3. Импортируйте ключ и подключитесь."
+    ),
     "generic_setup": (
         "Для настройки VPN на {device}:\n"
         "1. Установите клиент с поддержкой VLESS.\n"
         "2. Вставьте ключ в приложение.\n"
         "3. Выберите локацию и подключитесь.\n\n"
+        "Альтернативные клиенты: Happ / V2RayTUN.\n"
+        "Нужна помощь? Напишите в поддержку: {support}."
+    ),
+    "generic_setup_no_key": (
+        "Для настройки VPN на {device}:\n"
+        "1. Установите клиент с поддержкой VLESS.\n"
+        "2. Оплатите тариф - ключ появится в профиле.\n"
+        "3. Вставьте ключ и подключитесь.\n\n"
         "Альтернативные клиенты: Happ / V2RayTUN.\n"
         "Нужна помощь? Напишите в поддержку: {support}."
     ),
@@ -151,6 +172,13 @@ EN: Dict[str, str] = {
         "3. Choose a location and connect.\n\n"
         "If it still fails, try V2RayTUN."
     ),
+    "android_setup_no_key": (
+        "Android setup:\n"
+        "1. Install Happ from Google Play or APK.\n"
+        "2. Pay for a plan - the key will appear in your profile.\n"
+        "3. Paste the key and connect.\n\n"
+        "If it still fails, try V2RayTUN."
+    ),
     "android_v2ray": (
         "V2RayTUN setup:\n"
         "1. Install V2RayTUN from Google Play or APK.\n"
@@ -161,11 +189,25 @@ EN: Dict[str, str] = {
         "2. Open V2RayTUN, tap “+” -> “Import from clipboard”.\n"
         "3. Choose a location and connect."
     ),
+    "android_v2ray_no_key": (
+        "V2RayTUN setup:\n"
+        "1. Install V2RayTUN from Google Play or APK.\n"
+        "2. Pay for a plan - the key will appear in your profile.\n"
+        "3. Import the key and connect."
+    ),
     "generic_setup": (
         "Setup for {device}:\n"
         "1. Install any client that supports VLESS.\n"
         "2. Paste the key into the app.\n"
         "3. Choose a location and connect.\n\n"
+        "Alternative clients: Happ / V2RayTUN.\n"
+        "Need help? Contact support: {support}."
+    ),
+    "generic_setup_no_key": (
+        "Setup for {device}:\n"
+        "1. Install any client that supports VLESS.\n"
+        "2. Pay for a plan - the key will appear in your profile.\n"
+        "3. Paste the key and connect.\n\n"
         "Alternative clients: Happ / V2RayTUN.\n"
         "Need help? Contact support: {support}."
     ),

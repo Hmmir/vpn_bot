@@ -35,6 +35,7 @@
     - Updated default channel link to https://t.me/genialvpn.
     - Refined trial pricing copy to clarify card verification charge.
     - Reordered tariffs flow to show PRO features before pricing block.
+    - Device instructions now show setup text even without key (with pay-after note).
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.

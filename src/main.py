@@ -247,22 +247,23 @@ async def cb_device(callback: CallbackQuery) -> None:
     upsert_user(callback.from_user.id, lang)
     code = callback.data.split(":", 1)[1]
     key, sub_url = get_user_key_from_db(callback.from_user.id)
-    if not key:
-        await callback.message.answer(t(lang, "need_payment"), reply_markup=plans_kb(lang))
-        await callback.answer()
-        return
     if code == "android":
+        has_key = bool(key)
         one_click = sub_url or SUBSCRIPTION_URL or ONE_CLICK_URL
         await send_asset(callback.message, "steps", t(lang, "steps_banner"))
         await callback.message.answer(
-            t(lang, "android_setup", key=key),
-            reply_markup=android_actions_kb(lang, one_click),
+            t(lang, "android_setup" if has_key else "android_setup_no_key", key=key),
+            reply_markup=android_actions_kb(lang, one_click) if has_key else plans_kb(lang),
         )
     else:
         devices = DEVICES_EN if lang == "en" else DEVICES_RU
         device_title = dict(devices).get(code, code)
         await callback.message.answer(
-            t(lang, "generic_setup", device=device_title),
+            t(
+                lang,
+                "generic_setup" if key else "generic_setup_no_key",
+                device=device_title,
+            ),
         )
     await callback.answer()
 
@@ -272,15 +273,12 @@ async def cb_android_v2ray(callback: CallbackQuery) -> None:
     lang = get_lang(callback.from_user.id)
     upsert_user(callback.from_user.id, lang)
     key, sub_url = get_user_key_from_db(callback.from_user.id)
-    if not key:
-        await callback.message.answer(t(lang, "need_payment"), reply_markup=plans_kb(lang))
-        await callback.answer()
-        return
+    has_key = bool(key)
     one_click = sub_url or SUBSCRIPTION_URL or V2RAY_URL
     await send_asset(callback.message, "steps", t(lang, "steps_banner"))
     await callback.message.answer(
-        t(lang, "android_v2ray", key=key),
-        reply_markup=v2ray_actions_kb(lang, one_click),
+        t(lang, "android_v2ray" if has_key else "android_v2ray_no_key", key=key),
+        reply_markup=v2ray_actions_kb(lang, one_click) if has_key else plans_kb(lang),
     )
     await callback.answer()
 
