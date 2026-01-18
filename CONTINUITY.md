@@ -31,11 +31,13 @@
     - Shortened onboarding and reduced duplicate messages for support/channel/tariffs.
     - Updated pricing copy: trial 7 days/25 RUB, 3m 250, 12m 900.
     - Adjusted /start flow: menu line first, welcome text includes device prompt.
+    - Updated default channel link to https://t.me/genialvpn.
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.
     - Pull latest changes on server (pricing update) and restart bot(s).
     - Configure `.env` on server with `XUI_INBOUND_IDS`, `CHECK_URL`, XUI timeout, healthcheck/updatecheck vars.
+    - Replace bot media assets with new minimalistic images from `C:\Users\alien\Desktop\VPN\photovpn`.
   - Next:
     - Wire payments + auto key issuance; add runbook/tests.
 - Open questions (UNCONFIRMED if needed):
