@@ -60,7 +60,7 @@ RU: Dict[str, str] = {
         "- 1 мес: 100 руб\n"
         "- 3 мес: 250 руб\n"
         "- 12 мес: 900 руб\n\n"
-        f"Пробный период: {TRIAL_PRICE_RUB} за {TRIAL_DAYS} дней (спишем {TRIAL_PRICE_RUB} за привязку карты).\n"
+        f"Пробный период - {TRIAL_DAYS} дней. Спишем {TRIAL_PRICE_RUB} для привязки карты.\n"
         "PRO включает все функции и максимальную скорость.\n"
         "Если оплата прошла, а ключ не пришёл - напишите в поддержку."
     ),
@@ -175,7 +175,7 @@ EN: Dict[str, str] = {
         "- 1 month: 100 RUB\n"
         "- 3 months: 250 RUB\n"
         "- 12 months: 900 RUB\n\n"
-        f"Trial: {TRIAL_PRICE_RUB} for {TRIAL_DAYS} days (card verification charge).\n"
+        f"Trial - {TRIAL_DAYS} days. {TRIAL_PRICE_RUB} card verification charge.\n"
         "PRO includes all features and max speed.\n"
         "If payment went through but no key arrived - contact support."
     ),

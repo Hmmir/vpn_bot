@@ -19,8 +19,8 @@ PLANS = [
         code="trial",
         title_ru="Пробный период",
         title_en="Trial period",
-        price_ru="25 руб за 7 дней",
-        price_en="25 RUB for 7 days",
+        price_ru="7 дней (спишем 25 руб)",
+        price_en="7 days (25 RUB card check)",
         pay_url="https://example.com/pay/trial",
     ),
     Plan(

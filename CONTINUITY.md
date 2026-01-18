@@ -32,6 +32,7 @@
     - Updated pricing copy: trial 7 days/25 RUB, 3m 250, 12m 900.
     - Adjusted /start flow: menu line first, welcome text includes device prompt.
     - Updated default channel link to https://t.me/genialvpn.
+    - Refined trial pricing copy to clarify card verification charge.
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.
