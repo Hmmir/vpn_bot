@@ -37,6 +37,7 @@
     - Reordered tariffs flow to show PRO features before pricing block.
     - Device instructions now show setup text even without key (with pay-after note).
     - Added Happ/V2RayTUN download links in device instructions (support bot greeting kept clean).
+    - Added device-specific client links for non-Android setups (v2rayN/iOS v2RayTun/OpenWrt).
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.

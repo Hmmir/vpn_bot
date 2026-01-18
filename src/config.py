@@ -27,6 +27,15 @@ V2RAYTUN_URL = _get_env(
     "V2RAYTUN_URL",
     "https://play.google.com/store/apps/details?id=com.v2raytun.android",
 )
+V2RAYN_URL = _get_env(
+    "V2RAYN_URL",
+    "https://github.com/2dust/v2rayN/releases",
+)
+IOS_V2RAYTUN_URL = _get_env(
+    "IOS_V2RAYTUN_URL",
+    "https://apps.apple.com/us/app/v2raytun/id6476628951",
+)
+ROUTER_URL = _get_env("ROUTER_URL", "https://openwrt.org/")
 PRIVACY_EMAIL = _get_env("PRIVACY_EMAIL", "support@example.com")
 DEFAULT_KEY = _get_env("DEFAULT_KEY", "vless://REPLACE_ME")
 SUBSCRIPTION_URL = _get_env("SUBSCRIPTION_URL", "https://example.com/sub/REPLACE_ME")

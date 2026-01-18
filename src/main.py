@@ -14,6 +14,9 @@ from .config import (
     V2RAY_URL,
     HAPP_URL,
     V2RAYTUN_URL,
+    V2RAYN_URL,
+    IOS_V2RAYTUN_URL,
+    ROUTER_URL,
     DEFAULT_KEY,
     SUBSCRIPTION_URL,
     ADMIN_IDS,
@@ -52,6 +55,31 @@ from .issue import issue_access, list_inbounds
 router = Router()
 user_lang: Dict[int, str] = {}
 logging.basicConfig(level=logging.INFO)
+
+
+def client_line(lang: str, device_code: str) -> str:
+    if device_code == "ios":
+        label = "V2RayTun (App Store)"
+        url = IOS_V2RAYTUN_URL
+    elif device_code in ("windows", "macos", "linux"):
+        label = "v2rayN"
+        url = V2RAYN_URL
+    elif device_code == "android_tv":
+        label = "Happ"
+        url = HAPP_URL
+    elif device_code == "apple_tv":
+        label = "Подключение через роутер" if lang != "en" else "Router setup"
+        url = ROUTER_URL
+    elif device_code == "router":
+        label = "OpenWrt"
+        url = ROUTER_URL
+    else:
+        label = ""
+        url = ""
+    if not url:
+        return label
+    sep = " — " if lang != "en" else " - "
+    return f"{label}{sep}{url}"
 
 
 def get_lang(user_id: int) -> str:
@@ -271,6 +299,7 @@ async def cb_device(callback: CallbackQuery) -> None:
                 lang,
                 "generic_setup" if key else "generic_setup_no_key",
                 device=device_title,
+                client_line=client_line(lang, code),
             ),
         )
     await callback.answer()

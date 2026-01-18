@@ -64,9 +64,7 @@ RU: Dict[str, str] = {
         "1. Установите клиент с поддержкой VLESS.\n"
         "2. Вставьте ключ в приложение.\n"
         "3. Выберите локацию и подключитесь.\n\n"
-        "Альтернативные клиенты:\n"
-        "Happ: {happ_url}\n"
-        "V2RayTUN: {v2raytun_url}\n"
+        "Рекомендуемый клиент: {client_line}\n"
         "Нужна помощь? Напишите в поддержку: {support}."
     ),
     "generic_setup_no_key": (
@@ -74,9 +72,7 @@ RU: Dict[str, str] = {
         "1. Установите клиент с поддержкой VLESS.\n"
         "2. Оплатите тариф - ключ появится в профиле.\n"
         "3. Вставьте ключ и подключитесь.\n\n"
-        "Альтернативные клиенты:\n"
-        "Happ: {happ_url}\n"
-        "V2RayTUN: {v2raytun_url}\n"
+        "Рекомендуемый клиент: {client_line}\n"
         "Нужна помощь? Напишите в поддержку: {support}."
     ),
     "tariffs_banner": "Тарифы GetniusVPN",
@@ -204,9 +200,7 @@ EN: Dict[str, str] = {
         "1. Install any client that supports VLESS.\n"
         "2. Paste the key into the app.\n"
         "3. Choose a location and connect.\n\n"
-        "Alternative clients:\n"
-        "Happ: {happ_url}\n"
-        "V2RayTUN: {v2raytun_url}\n"
+        "Recommended client: {client_line}\n"
         "Need help? Contact support: {support}."
     ),
     "generic_setup_no_key": (
@@ -214,9 +208,7 @@ EN: Dict[str, str] = {
         "1. Install any client that supports VLESS.\n"
         "2. Pay for a plan - the key will appear in your profile.\n"
         "3. Paste the key and connect.\n\n"
-        "Alternative clients:\n"
-        "Happ: {happ_url}\n"
-        "V2RayTUN: {v2raytun_url}\n"
+        "Recommended client: {client_line}\n"
         "Need help? Contact support: {support}."
     ),
     "tariffs_banner": "GetniusVPN Plans",
@@ -308,6 +300,7 @@ def t(lang: str, text_id: str, **kwargs: str) -> str:
         "privacy_email": PRIVACY_EMAIL,
         "happ_url": kwargs.get("happ_url", ""),
         "v2raytun_url": kwargs.get("v2raytun_url", ""),
+        "client_line": kwargs.get("client_line", ""),
     }
     base.update(kwargs)
     text = data.get(text_id, "")
