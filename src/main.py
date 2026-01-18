@@ -142,13 +142,13 @@ async def install_vpn(message: Message) -> None:
 async def show_tariffs(message: Message) -> None:
     lang = get_lang(message.from_user.id)
     upsert_user(message.from_user.id, lang)
+    await send_asset(message, "pro", t(lang, "pro_features"))
     await send_asset(
         message,
         "pricing",
         t(lang, "tariffs"),
         reply_markup=plans_kb(lang),
     )
-    await send_asset(message, "pro", t(lang, "pro_features"))
 
 
 @router.message(F.text.in_(["Профиль", "Profile"]))
@@ -301,13 +301,13 @@ async def cb_faq(callback: CallbackQuery) -> None:
 async def cb_tariffs(callback: CallbackQuery) -> None:
     lang = get_lang(callback.from_user.id)
     upsert_user(callback.from_user.id, lang)
+    await send_asset(callback.message, "pro", t(lang, "pro_features"))
     await send_asset(
         callback.message,
         "pricing",
         t(lang, "tariffs"),
         reply_markup=plans_kb(lang),
     )
-    await send_asset(callback.message, "pro", t(lang, "pro_features"))
     await callback.answer()
 
 
