@@ -31,6 +31,10 @@ V2RAYN_URL = _get_env(
     "V2RAYN_URL",
     "https://github.com/2dust/v2rayN/releases",
 )
+V2RAYA_URL = _get_env(
+    "V2RAYA_URL",
+    "https://github.com/v2rayA/v2rayA",
+)
 IOS_V2RAYTUN_URL = _get_env(
     "IOS_V2RAYTUN_URL",
     "https://apps.apple.com/us/app/v2raytun/id6476628951",

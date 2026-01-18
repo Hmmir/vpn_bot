@@ -2,10 +2,11 @@ import asyncio
 from datetime import datetime, timedelta, timezone
 import logging
 from typing import Dict, Optional
+from urllib.parse import quote
 
 from aiogram import Bot, Dispatcher, Router, F
 from aiogram.filters import CommandStart, Command
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, InputMediaPhoto
 
 from .config import (
     BOT_TOKEN,
@@ -15,6 +16,7 @@ from .config import (
     HAPP_URL,
     V2RAYTUN_URL,
     V2RAYN_URL,
+    V2RAYA_URL,
     IOS_V2RAYTUN_URL,
     ROUTER_URL,
     DEFAULT_KEY,
@@ -61,9 +63,12 @@ def client_line(lang: str, device_code: str) -> str:
     if device_code == "ios":
         label = "V2RayTun (App Store)"
         url = IOS_V2RAYTUN_URL
-    elif device_code in ("windows", "macos", "linux"):
+    elif device_code == "windows":
         label = "v2rayN"
         url = V2RAYN_URL
+    elif device_code in ("macos", "linux"):
+        label = "v2rayA"
+        url = V2RAYA_URL
     elif device_code == "android_tv":
         label = "Happ"
         url = HAPP_URL
@@ -80,6 +85,12 @@ def client_line(lang: str, device_code: str) -> str:
         return label
     sep = " — " if lang != "en" else " - "
     return f"{label}{sep}{url}"
+
+
+def v2raytun_deeplink(sub_url: str) -> str:
+    if not sub_url:
+        return ""
+    return f"v2raytun://import/{quote(sub_url, safe='')}"
 
 
 def get_lang(user_id: int) -> str:
@@ -148,18 +159,50 @@ async def send_asset(
         await message.answer(caption, reply_markup=reply_markup)
 
 
+async def edit_asset_message(
+    message: Message,
+    key: str,
+    caption: str,
+    reply_markup=None,
+) -> None:
+    asset = asset_file(key)
+    if message.photo:
+        if asset:
+            await message.edit_media(
+                InputMediaPhoto(media=asset, caption=caption),
+                reply_markup=reply_markup,
+            )
+        else:
+            await message.edit_caption(caption=caption, reply_markup=reply_markup)
+        return
+    if asset:
+        await message.answer_photo(asset, caption=caption, reply_markup=reply_markup)
+        return
+    await message.edit_text(caption, reply_markup=reply_markup)
+
+
+async def edit_text_message(
+    message: Message,
+    text: str,
+    reply_markup=None,
+) -> None:
+    if message.photo:
+        await message.edit_caption(caption=text, reply_markup=reply_markup)
+        return
+    await message.edit_text(text, reply_markup=reply_markup)
+
+
 @router.message(CommandStart())
 async def cmd_start(message: Message) -> None:
     lang = get_lang(message.from_user.id)
     upsert_user(message.from_user.id, lang)
-    menu_line = "Menu ↓" if lang == "en" else "Меню ↓"
-    await message.answer(menu_line, reply_markup=main_menu_kb(lang))
     await send_asset(
         message,
         "welcome",
         t(lang, "welcome_text"),
-        reply_markup=device_kb(lang),
+        reply_markup=main_menu_kb(lang),
     )
+    await message.answer(t(lang, "device_prompt"), reply_markup=device_kb(lang))
 
 
 @router.message(F.text.in_(["Установить VPN", "Install VPN"]))
@@ -267,7 +310,11 @@ async def switch_to_russian(message: Message) -> None:
 async def cb_menu(callback: CallbackQuery) -> None:
     lang = get_lang(callback.from_user.id)
     upsert_user(callback.from_user.id, lang)
-    await callback.message.answer(t(lang, "device_prompt"), reply_markup=device_kb(lang))
+    await edit_text_message(
+        callback.message,
+        t(lang, "device_prompt"),
+        reply_markup=device_kb(lang),
+    )
     await callback.answer()
 
 
@@ -280,8 +327,8 @@ async def cb_device(callback: CallbackQuery) -> None:
     if code == "android":
         has_key = bool(key)
         one_click = sub_url or SUBSCRIPTION_URL or ONE_CLICK_URL
-        await send_asset(callback.message, "steps", t(lang, "steps_banner"))
-        await callback.message.answer(
+        await edit_text_message(
+            callback.message,
             t(
                 lang,
                 "android_setup" if has_key else "android_setup_no_key",
@@ -294,13 +341,15 @@ async def cb_device(callback: CallbackQuery) -> None:
     else:
         devices = DEVICES_EN if lang == "en" else DEVICES_RU
         device_title = dict(devices).get(code, code)
-        await callback.message.answer(
+        await edit_text_message(
+            callback.message,
             t(
                 lang,
                 "generic_setup" if key else "generic_setup_no_key",
                 device=device_title,
                 client_line=client_line(lang, code),
             ),
+            reply_markup=plans_kb(lang) if not key else None,
         )
     await callback.answer()
 
@@ -311,9 +360,10 @@ async def cb_android_v2ray(callback: CallbackQuery) -> None:
     upsert_user(callback.from_user.id, lang)
     key, sub_url = get_user_key_from_db(callback.from_user.id)
     has_key = bool(key)
-    one_click = sub_url or SUBSCRIPTION_URL or V2RAY_URL
-    await send_asset(callback.message, "steps", t(lang, "steps_banner"))
-    await callback.message.answer(
+    deeplink = v2raytun_deeplink(sub_url or SUBSCRIPTION_URL)
+    one_click = deeplink or V2RAY_URL or sub_url
+    await edit_text_message(
+        callback.message,
         t(
             lang,
             "android_v2ray" if has_key else "android_v2ray_no_key",

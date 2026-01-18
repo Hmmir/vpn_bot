@@ -9,7 +9,7 @@
   - Media assets in `assets/` and helper mapping in `src/media.py`.
   - Support bot: `@GetniusSupport_bot`, channel: `https://t.me/genialvpn`, admin ID: `5795082902`.
   - Branding defaults: `Lagom VPN Pro` and `@lagvpnbot`.
-  - Manual testing now; planned payment provider: YooMoney (ЮMoney).
+  - Manual testing now; planned payment provider: YooMoney.
 - State:
   - Done:
     - Added media cards (welcome/pricing/pro/referral/steps) and updated bot flows to send images.
@@ -38,16 +38,20 @@
     - Device instructions now show setup text even without key (with pay-after note).
     - Added Happ/V2RayTUN download links in device instructions (support bot greeting kept clean).
     - Added device-specific client links for non-Android setups (v2rayN/iOS v2RayTun/OpenWrt).
+    - Fixed garbled Cyrillic in `src/data.py`, `src/keyboards.py`, `src/texts.py`, `src/support_bot.py`.
+    - Updated device flow so selection edits same message (no extra posts) and added V2RayTUN deep link.
+    - Removed visible menu-open message; reply keyboard still shown via welcome message.
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.
     - Pull latest changes on server (pricing update) and restart bot(s).
     - Configure `.env` on server with `XUI_INBOUND_IDS`, `CHECK_URL`, XUI timeout, healthcheck/updatecheck vars.
-    - Replace bot media assets with new minimalistic images from `C:\Users\alien\Desktop\VPN\photovpn`.
+    - Replace bot media assets with new minimalistic images from `C:\\Users\\alien\\Desktop\\VPN\\photovpn`.
+    - Update client links for macOS/Linux in `.env` (V2rayA) if desired.
   - Next:
     - Wire payments + auto key issuance; add runbook/tests.
 - Open questions (UNCONFIRMED if needed):
   - Support bot token, support admin chat ID (if different from admin ID).
   - Final pricing, trial duration, renewal URL, YooMoney webhook format/signature.
 - Working set (files/ids/commands):
-  - `src/main.py`, `src/texts.py`, `src/keyboards.py`, `src/issue.py`, `src/ops/*`, `.env.example`, `deploy/systemd/*`, `AUDIT.md`
+  - `src/main.py`, `src/texts.py`, `src/keyboards.py`, `src/support_bot.py`, `src/issue.py`, `src/ops/*`, `.env.example`, `deploy/systemd/*`, `AUDIT.md`

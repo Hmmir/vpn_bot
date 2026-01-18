@@ -83,9 +83,7 @@ def android_actions_kb(lang: str, one_click_url: str) -> InlineKeyboardMarkup:
     ]
     if check_button:
         rows.insert(2, check_button)
-    return InlineKeyboardMarkup(
-        inline_keyboard=rows
-    )
+    return InlineKeyboardMarkup(inline_keyboard=rows)
 
 
 def v2ray_actions_kb(lang: str, v2ray_url: str) -> InlineKeyboardMarkup:
@@ -192,9 +190,9 @@ def profile_actions_kb(
         if check_url:
             rows.append([InlineKeyboardButton(text="Check connection", url=check_url)])
     else:
-        rows.append([InlineKeyboardButton(text="Переотправить ключ", callback_data="profile:resend")])
+        rows.append([InlineKeyboardButton(text="Отправить ключ", callback_data="profile:resend")])
         if sub_url:
-            rows.append([InlineKeyboardButton(text="Сменить сервер", url=sub_url)])
+            rows.append([InlineKeyboardButton(text="Переключить сервер", url=sub_url)])
         if check_url:
             rows.append([InlineKeyboardButton(text="Проверить соединение", url=check_url)])
     return InlineKeyboardMarkup(inline_keyboard=rows)

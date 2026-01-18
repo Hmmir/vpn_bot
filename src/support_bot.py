@@ -36,7 +36,7 @@ def format_user_header(message: Message, ticket_id: str) -> str:
     tg = message.from_user
     username = f"@{tg.username}" if tg.username else "-"
     return (
-        "Новый запрос в поддержку:\n"
+        "Новое обращение в поддержку:\n"
         f"Тикет: {ticket_id}\n"
         f"Имя: {tg.full_name}\n"
         f"Username: {username}\n"
@@ -61,7 +61,7 @@ async def support_start(message: Message) -> None:
     else:
         text = (
             f"Привет! Это поддержка {BRAND_NAME}.\n"
-            "Напишите ваш вопрос - мы ответим в ближайшее время."
+            "Напишите ваш вопрос — мы ответим в ближайшее время."
         )
     await message.answer(text)
 
@@ -72,7 +72,7 @@ async def admin_reply(message: Message) -> None:
         return
     parts = (message.text or "").split(maxsplit=2)
     if len(parts) < 3:
-        await message.answer("Формат: /reply USER_ID текст ответа")
+        await message.answer("Использование: /reply USER_ID текст")
         return
     try:
         target_id = int(parts[1])
@@ -80,7 +80,7 @@ async def admin_reply(message: Message) -> None:
         await message.answer("USER_ID должен быть числом.")
         return
     await message.bot.send_message(target_id, parts[2])
-    await message.answer("Ответ отправлен.")
+    await message.answer("Сообщение отправлено.")
 
 
 @router.message(F.reply_to_message)
@@ -101,7 +101,7 @@ async def relay_user_message(message: Message) -> None:
     targets = admin_targets()
     if not targets:
         await message.answer(
-            "Поддержка сейчас недоступна. Попробуйте позже."
+            "Поддержка временно недоступна. Попробуйте позже."
         )
         return
     ticket_id = make_ticket_id(message.from_user.id)
