@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 import sqlite3
-from typing import Iterable, List
+from typing import List
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,13 +18,20 @@ class Reminder:
     kind: str
 
 
+@dataclass(frozen=True)
+class SubscriptionInfo:
+    plan_code: str
+    expires_at: str
+    status: str
+
+
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
 def _connect() -> sqlite3.Connection:
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=10)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -89,6 +96,17 @@ def upsert_user(user_id: int, lang: str) -> None:
             """,
             (lang, now, user_id),
         )
+
+
+def get_user_lang(user_id: int) -> str:
+    with _connect() as conn:
+        row = conn.execute(
+            "SELECT lang FROM users WHERE user_id = ?",
+            (user_id,),
+        ).fetchone()
+    if not row:
+        return "ru"
+    return row["lang"] or "ru"
 
 
 def set_subscription(user_id: int, expires_at_iso: str, plan_code: str = "manual") -> None:
@@ -174,6 +192,21 @@ def get_user_key(user_id: int) -> tuple[str, str]:
     if not row:
         return "", ""
     return row["vless_uri"] or "", row["sub_url"] or ""
+
+
+def get_subscription(user_id: int) -> SubscriptionInfo | None:
+    with _connect() as conn:
+        row = conn.execute(
+            "SELECT plan_code, expires_at, status FROM subscriptions WHERE user_id = ?",
+            (user_id,),
+        ).fetchone()
+    if not row:
+        return None
+    return SubscriptionInfo(
+        plan_code=row["plan_code"] or "",
+        expires_at=row["expires_at"] or "",
+        status=row["status"] or "",
+    )
 
 
 def list_due_reminders(now: datetime) -> List[Reminder]:

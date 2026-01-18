@@ -1,5 +1,5 @@
 - Goal (incl. success criteria):
-  - Deliver GetniusVPN Telegram bot with onboarding, device setup, tariffs, profile, FAQ, referral, RU/EN, media cards, and automated expiry reminders; add support bot + channel integration.
+  - Deliver GetniusVPN Telegram bot with onboarding, device setup, tariffs, profile, FAQ, referral, RU/EN, media cards, automated expiry reminders, support bot + channel integration, and confirm production readiness for real users.
 - Constraints/Assumptions:
   - Keep secrets out of git; use `.env` on server.
   - Use user-provided screenshots/copy; match competitor flow (2-column buttons) but rephrase branding.
@@ -7,6 +7,8 @@
 - Key decisions:
   - Aiogram v3 bot; SQLite storage at `data/bot.db`; hourly reminder loop.
   - Media assets in `assets/` and helper mapping in `src/media.py`.
+  - Support bot: `@GetniusSupport_bot`, channel: `@GetniusVPN`, admin ID: `5795082902`.
+  - Manual testing now; planned payment provider: YooMoney (ЮMoney).
 - State:
   - Done:
     - Added media cards (welcome/pricing/pro/referral/steps) and updated bot flows to send images.
@@ -18,14 +20,26 @@
     - Added 3x-ui API client scaffolding and admin issue command (`/issue`, `/xui_inbounds`).
     - Added webhook handler and systemd unit templates for main/support/webhook services.
     - Added upsert logic for existing clients via 3x-ui API.
+    - Fixed RU/EN encoding issues in texts/keyboards/support bot/webhook.
+    - Added profile empty-state + clarified key copy hint.
+    - Added multi-inbound support via `XUI_INBOUND_IDS` and updated XUI issue flow.
+    - Added ops scripts for healthchecks and update checks + systemd timers.
+    - Added strict audit file `AUDIT.md`.
+    - Added profile actions (resend key, switch server via subscription, check connection).
+    - Added healthcheck/updatecheck envs + XUI timeout.
+    - Added support ticket IDs and DB-backed language restore.
+    - Shortened onboarding and reduced duplicate messages for support/channel/tariffs.
+    - Adjusted /start flow: menu line first, welcome text includes device prompt.
   - Now:
-    - Push changes to GitHub.
-    - Configure XUI + webhook env vars and test `/issue` + webhook.
-    - Redeploy to server and restart bot(s).
+    - Systemd units installed; main/support/webhook services running on server.
+    - Rotate bot tokens (posted in chat) and update `.env` on server.
+    - Push latest changes to GitHub.
+    - Configure `.env` on server with `XUI_INBOUND_IDS`, `CHECK_URL`, XUI timeout, healthcheck/updatecheck vars.
+    - Redeploy to server and restart bot(s) + timers.
   - Next:
-    - Wire payments + auto key issuance; add runbook/systemd and tests.
+    - Wire payments + auto key issuance; add runbook/tests.
 - Open questions (UNCONFIRMED if needed):
-  - Support bot token/username, support admin chat ID, channel link.
-  - Final pricing, trial duration, renewal URL.
+  - Support bot token, support admin chat ID (if different from admin ID).
+  - Final pricing, trial duration, renewal URL, YooMoney webhook format/signature.
 - Working set (files/ids/commands):
-  - `src/main.py`, `src/texts.py`, `src/keyboards.py`, `src/media.py`, `src/storage.py`, `.env.example`, `assets/*`
+  - `src/main.py`, `src/texts.py`, `src/keyboards.py`, `src/issue.py`, `src/ops/*`, `.env.example`, `deploy/systemd/*`, `AUDIT.md`

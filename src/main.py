@@ -16,6 +16,7 @@ from .config import (
     SUBSCRIPTION_URL,
     ADMIN_IDS,
     REMINDER_INTERVAL_MINUTES,
+    XUI_LIMIT_IP,
 )
 from .keyboards import (
     main_menu_kb,
@@ -27,9 +28,10 @@ from .keyboards import (
     renew_kb,
     support_kb,
     channel_kb,
+    profile_actions_kb,
 )
 from .texts import t
-from .data import DEVICES_RU, DEVICES_EN, PLAN_DAYS
+from .data import DEVICES_RU, DEVICES_EN, PLAN_DAYS, PLANS
 from .media import asset_file
 from .storage import (
     init_db,
@@ -39,7 +41,8 @@ from .storage import (
     set_subscription,
     upsert_user,
     get_user_key as get_user_key_from_db,
-    set_user_key,
+    get_subscription,
+    get_user_lang,
 )
 from .issue import issue_access, list_inbounds
 
@@ -50,6 +53,8 @@ logging.basicConfig(level=logging.INFO)
 
 
 def get_lang(user_id: int) -> str:
+    if user_id not in user_lang:
+        user_lang[user_id] = get_user_lang(user_id)
     return user_lang.get(user_id, "ru")
 
 
@@ -74,6 +79,29 @@ def is_admin(user_id: int) -> bool:
     return user_id in ADMIN_IDS
 
 
+def format_expires(value: str) -> str:
+    if not value:
+        return "—"
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError:
+        return value
+    return parsed.strftime("%Y-%m-%d")
+
+
+def format_plan(lang: str, code: str) -> str:
+    if not code:
+        return "—"
+    for plan in PLANS:
+        if plan.code == code:
+            return plan.title_en if lang == "en" else plan.title_ru
+    return code
+
+
+def format_limit(lang: str) -> str:
+    if XUI_LIMIT_IP <= 0:
+        return "без ограничений" if lang != "en" else "no limit"
+    return str(XUI_LIMIT_IP)
 
 
 async def send_asset(
@@ -94,9 +122,14 @@ async def send_asset(
 async def cmd_start(message: Message) -> None:
     lang = get_lang(message.from_user.id)
     upsert_user(message.from_user.id, lang)
-    await send_asset(message, "welcome", t(lang, "welcome_banner"))
-    await message.answer(t(lang, "welcome_text"), reply_markup=device_kb(lang))
-    await message.answer(t(lang, "menu_hint"), reply_markup=main_menu_kb(lang))
+    menu_line = "Menu ↓" if lang == "en" else "Меню ↓"
+    await message.answer(menu_line, reply_markup=main_menu_kb(lang))
+    await send_asset(
+        message,
+        "welcome",
+        t(lang, "welcome_text"),
+        reply_markup=device_kb(lang),
+    )
 
 
 @router.message(F.text.in_(["Установить VPN", "Install VPN"]))
@@ -109,8 +142,12 @@ async def install_vpn(message: Message) -> None:
 async def show_tariffs(message: Message) -> None:
     lang = get_lang(message.from_user.id)
     upsert_user(message.from_user.id, lang)
-    await send_asset(message, "pricing", t(lang, "tariffs_banner"))
-    await message.answer(t(lang, "tariffs"), reply_markup=plans_kb(lang))
+    await send_asset(
+        message,
+        "pricing",
+        t(lang, "tariffs"),
+        reply_markup=plans_kb(lang),
+    )
     await send_asset(message, "pro", t(lang, "pro_features"))
 
 
@@ -118,20 +155,29 @@ async def show_tariffs(message: Message) -> None:
 async def show_profile(message: Message) -> None:
     lang = get_lang(message.from_user.id)
     upsert_user(message.from_user.id, lang)
-    key, sub_url = get_user_key(message.from_user.id)
+    stored_key, stored_sub = get_user_key_from_db(message.from_user.id)
+    if not stored_key:
+        await message.answer(t(lang, "profile_empty"), reply_markup=plans_kb(lang))
+        return
+    subscription = get_subscription(message.from_user.id)
+    plan = format_plan(lang, subscription.plan_code if subscription else "")
+    expires_at = format_expires(subscription.expires_at if subscription else "")
     await message.answer(
         t(
             lang,
             "profile",
-            key=key,
+            key=stored_key,
             traffic="0.0 GB",
-            expires="—",
+            expires=expires_at,
+            plan=plan,
+            limit=format_limit(lang),
             ref_link=ref_link(message.from_user.id),
-        )
+        ),
+        reply_markup=profile_actions_kb(lang, stored_sub),
     )
-    if sub_url:
+    if stored_sub:
         line = "Ссылка подписки:" if lang != "en" else "Subscription URL:"
-        await message.answer(f"{line}\n{sub_url}")
+        await message.answer(f"{line}\n{stored_sub}")
 
 
 @router.message(F.text.in_(["Вопросы", "Questions"]))
@@ -158,10 +204,9 @@ async def show_support(message: Message) -> None:
     await send_asset(
         message,
         "support",
-        t(lang, "support_banner"),
+        t(lang, "support_text"),
         reply_markup=support_kb(lang),
     )
-    await message.answer(t(lang, "support_text"), reply_markup=support_kb(lang))
 
 
 @router.message(F.text.in_(["Канал", "Channel"]))
@@ -171,10 +216,9 @@ async def show_channel(message: Message) -> None:
     await send_asset(
         message,
         "channel",
-        t(lang, "channel_banner"),
+        t(lang, "channel_text"),
         reply_markup=channel_kb(lang),
     )
-    await message.answer(t(lang, "channel_text"), reply_markup=channel_kb(lang))
 
 
 @router.message(F.text == "Switch to English")
@@ -202,7 +246,11 @@ async def cb_device(callback: CallbackQuery) -> None:
     lang = get_lang(callback.from_user.id)
     upsert_user(callback.from_user.id, lang)
     code = callback.data.split(":", 1)[1]
-    key, sub_url = get_user_key(callback.from_user.id)
+    key, sub_url = get_user_key_from_db(callback.from_user.id)
+    if not key:
+        await callback.message.answer(t(lang, "need_payment"), reply_markup=plans_kb(lang))
+        await callback.answer()
+        return
     if code == "android":
         one_click = sub_url or SUBSCRIPTION_URL or ONE_CLICK_URL
         await send_asset(callback.message, "steps", t(lang, "steps_banner"))
@@ -223,7 +271,11 @@ async def cb_device(callback: CallbackQuery) -> None:
 async def cb_android_v2ray(callback: CallbackQuery) -> None:
     lang = get_lang(callback.from_user.id)
     upsert_user(callback.from_user.id, lang)
-    key, sub_url = get_user_key(callback.from_user.id)
+    key, sub_url = get_user_key_from_db(callback.from_user.id)
+    if not key:
+        await callback.message.answer(t(lang, "need_payment"), reply_markup=plans_kb(lang))
+        await callback.answer()
+        return
     one_click = sub_url or SUBSCRIPTION_URL or V2RAY_URL
     await send_asset(callback.message, "steps", t(lang, "steps_banner"))
     await callback.message.answer(
@@ -238,8 +290,7 @@ async def cb_faq(callback: CallbackQuery) -> None:
     lang = get_lang(callback.from_user.id)
     upsert_user(callback.from_user.id, lang)
     code = callback.data.split(":", 1)[1]
-    key = f"faq_{code}"
-    text = t(lang, key)
+    text = t(lang, f"faq_{code}")
     if not text:
         text = t(lang, "faq_main")
     await callback.message.answer(text)
@@ -250,9 +301,29 @@ async def cb_faq(callback: CallbackQuery) -> None:
 async def cb_tariffs(callback: CallbackQuery) -> None:
     lang = get_lang(callback.from_user.id)
     upsert_user(callback.from_user.id, lang)
-    await send_asset(callback.message, "pricing", t(lang, "tariffs_banner"))
-    await callback.message.answer(t(lang, "tariffs"), reply_markup=plans_kb(lang))
+    await send_asset(
+        callback.message,
+        "pricing",
+        t(lang, "tariffs"),
+        reply_markup=plans_kb(lang),
+    )
     await send_asset(callback.message, "pro", t(lang, "pro_features"))
+    await callback.answer()
+
+
+@router.callback_query(F.data == "profile:resend")
+async def cb_profile_resend(callback: CallbackQuery) -> None:
+    lang = get_lang(callback.from_user.id)
+    upsert_user(callback.from_user.id, lang)
+    stored_key, stored_sub = get_user_key_from_db(callback.from_user.id)
+    if not stored_key:
+        await callback.message.answer(t(lang, "profile_empty"), reply_markup=plans_kb(lang))
+        await callback.answer()
+        return
+    await callback.message.answer(stored_key)
+    if stored_sub:
+        line = "Ссылка подписки:" if lang != "en" else "Subscription URL:"
+        await callback.message.answer(f"{line}\n{stored_sub}")
     await callback.answer()
 
 
@@ -319,7 +390,7 @@ async def xui_inbounds_cmd(message: Message) -> None:
         return
     items = await list_inbounds()
     if not items:
-        await message.answer("Список инбаундов пуст или XUI не настроен.")
+        await message.answer("Список inbound пуст или XUI не настроен.")
         return
     lines = ["Inbounds:"]
     for inbound in items:

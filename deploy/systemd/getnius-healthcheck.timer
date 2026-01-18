@@ -1,0 +1,11 @@
+[Unit]
+Description=Run GetniusVPN healthcheck every 5 minutes
+
+[Timer]
+OnBootSec=3m
+OnUnitActiveSec=5m
+Unit=getnius-healthcheck.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target

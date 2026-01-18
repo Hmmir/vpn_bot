@@ -1,0 +1,11 @@
+[Unit]
+Description=Run GetniusVPN update check weekly
+
+[Timer]
+OnBootSec=10m
+OnCalendar=weekly
+Unit=getnius-updatecheck.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,6 +1,7 @@
 import asyncio
 import logging
-from typing import Dict, Optional
+from datetime import datetime, timezone
+from typing import Dict
 
 from aiogram import Bot, Dispatcher, Router, F
 from aiogram.filters import Command, CommandStart
@@ -31,15 +32,21 @@ def admin_targets() -> list[int]:
     return list(SUPPORT_ADMIN_IDS)
 
 
-def format_user_header(user: Message) -> str:
-    tg = user.from_user
-    username = f"@{tg.username}" if tg.username else "—"
+def format_user_header(message: Message, ticket_id: str) -> str:
+    tg = message.from_user
+    username = f"@{tg.username}" if tg.username else "-"
     return (
-        "Новая заявка в поддержку\n"
+        "Новый запрос в поддержку:\n"
+        f"Тикет: {ticket_id}\n"
         f"Имя: {tg.full_name}\n"
         f"Username: {username}\n"
         f"ID: {tg.id}"
     )
+
+
+def make_ticket_id(user_id: int) -> str:
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+    return f"T{stamp}-{user_id}"
 
 
 @router.message(CommandStart())
@@ -53,8 +60,8 @@ async def support_start(message: Message) -> None:
         )
     else:
         text = (
-            f"Здравствуйте! Это поддержка {BRAND_NAME}.\n"
-            "Опишите проблему или вопрос — мы ответим в ближайшее время."
+            f"Привет! Это поддержка {BRAND_NAME}.\n"
+            "Напишите ваш вопрос — мы ответим в ближайшее время."
         )
     await message.answer(text)
 
@@ -73,7 +80,7 @@ async def admin_reply(message: Message) -> None:
         await message.answer("USER_ID должен быть числом.")
         return
     await message.bot.send_message(target_id, parts[2])
-    await message.answer("Отправлено.")
+    await message.answer("Ответ отправлен.")
 
 
 @router.message(F.reply_to_message)
@@ -93,9 +100,12 @@ async def relay_user_message(message: Message) -> None:
         return
     targets = admin_targets()
     if not targets:
-        await message.answer("Поддержка пока не настроена. Попробуйте позже.")
+        await message.answer(
+            "Поддержка сейчас недоступна. Попробуйте позже."
+        )
         return
-    header = format_user_header(message)
+    ticket_id = make_ticket_id(message.from_user.id)
+    header = format_user_header(message, ticket_id)
     for chat_id in targets:
         await message.bot.send_message(chat_id, header)
         await message.bot.copy_message(
@@ -103,7 +113,9 @@ async def relay_user_message(message: Message) -> None:
             from_chat_id=message.chat.id,
             message_id=message.message_id,
         )
-    await message.answer("Спасибо! Мы получили сообщение и скоро ответим.")
+    await message.answer(
+        f"Спасибо! Мы получили сообщение. Номер тикета: {ticket_id}."
+    )
 
 
 async def main() -> None:

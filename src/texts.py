@@ -21,35 +21,34 @@ RU: Dict[str, str] = {
     "welcome_text": (
         "{brand} - быстрый и безопасный VPN на протоколе VLESS.\n"
         "Просто вставьте ключ в приложение и выберите локацию.\n\n"
-        "Меню внизу - выберите раздел или сразу установите VPN.\n\n"
         "Выберите ваше устройство:"
     ),
-    "device_prompt": "Выберите ваше устройство:",
-    "steps_banner": "Подключение в 1 клик",
+    "device_prompt": "Выберите устройство:",
+    "steps_banner": "Подключение в 3 шага",
     "android_setup": (
         "Для настройки VPN на Android:\n"
-        "1. Скачайте Happ из Google Play или APK.\n"
+        "1. Установите Happ из Google Play или APK.\n"
         "2. Нажмите кнопку ниже, чтобы подключиться в 1 клик.\n\n"
-        "Если автонастройка не сработала:\n"
+        "Если автоматическая настройка не сработала:\n"
         "1. Скопируйте ключ, нажав на него:\n"
         "{key}\n"
-        "2. Откройте Happ и нажмите \"Вставить/Из буфера\".\n"
+        "2. Откройте Happ и нажмите «Вставить/Из буфера».\n"
         "3. Выберите локацию и подключитесь.\n\n"
         "Если приложение не работает, попробуйте V2RayTUN."
     ),
     "android_v2ray": (
         "Для настройки VPN через V2RayTUN:\n"
-        "1. Скачайте V2RayTUN из Google Play или APK.\n"
+        "1. Установите V2RayTUN из Google Play или APK.\n"
         "2. Нажмите кнопку ниже, чтобы подключиться в 1 клик.\n\n"
-        "Если автонастройка не сработала:\n"
+        "Если автоматическая настройка не сработала:\n"
         "1. Скопируйте ключ:\n"
         "{key}\n"
-        "2. Откройте V2RayTUN, нажмите \"+\" -> \"Импорт из буфера\".\n"
+        "2. Откройте V2RayTUN, нажмите «+» -> «Импорт из буфера».\n"
         "3. Выберите локацию и подключитесь."
     ),
     "generic_setup": (
         "Для настройки VPN на {device}:\n"
-        "1. Установите любой клиент с поддержкой VLESS.\n"
+        "1. Установите клиент с поддержкой VLESS.\n"
         "2. Вставьте ключ в приложение.\n"
         "3. Выберите локацию и подключитесь.\n\n"
         "Альтернативные клиенты: Happ / V2RayTUN.\n"
@@ -57,12 +56,13 @@ RU: Dict[str, str] = {
     ),
     "tariffs_banner": "Тарифы GetniusVPN",
     "tariffs": (
-        "Доступные тарифы:\n"
+        "Тарифы:\n"
         "- 1 мес: 100 руб\n"
         "- 3 мес: 270 руб\n"
         "- 12 мес: 960 руб\n\n"
         f"Пробный период: {TRIAL_PRICE_RUB} за {TRIAL_DAYS} дня.\n"
-        "Выберите тариф и подключайтесь!"
+        "PRO включает все функции и максимальную скорость.\n"
+        "Если оплата прошла, а ключ не пришёл — напишите в поддержку."
     ),
     "pro_features": (
         "PRO-функции:\n"
@@ -76,63 +76,56 @@ RU: Dict[str, str] = {
         "Ваш ключ:\n"
         "{key}\n"
         "Нажмите на ключ, чтобы скопировать.\n\n"
+        "Тариф: {plan}\n"
+        "Лимит устройств: {limit}\n"
         "Потребление трафика: {traffic}\n"
         "Действует до: {expires}\n\n"
         "Получите +1 месяц за каждого приглашенного друга, который стал PRO.\n"
         "Поделитесь ссылкой:\n"
         "{ref_link}"
     ),
-    "faq_main": "Выберите вопрос, который вас интересует:",
-    "faq_pro": (
-        "PRO включает максимальную скорость, все локации и расширенные функции."
+    "profile_empty": (
+        "У вас пока нет активного ключа.\n"
+        "Оплатите тариф — бот автоматически выдаст ключ и ссылку на подписку."
     ),
+    "need_payment": "Чтобы получить ключ, выберите тариф и оплатите доступ.",
+    "faq_main": "Выберите вопрос:",
+    "faq_pro": "PRO включает максимальную скорость, все локации и расширенные функции.",
     "faq_broken": (
         "Что-то не работает\n\n"
         "1. Обновите ключ в приложении.\n"
-        "2. Смените локацию.\n"
-        "3. Попробуйте другой клиент (например, V2RayTUN).\n\n"
-        "Если проблема осталась - напишите в поддержку: {support}."
+        "2. Переключите локацию.\n"
+        "3. Попробуйте другой клиент (Happ или V2RayTUN).\n\n"
+        "Если проблема осталась — напишите в поддержку: {support}."
     ),
     "faq_about": (
         "{brand} — быстрый и безопасный VPN.\n"
         "Полное шифрование трафика на VLESS.\n"
-        "Высокая скорость без ограничений.\n"
-        "До 5 устройств одновременно.\n"
-        "Совместимость с популярными клиентами."
+        "Высокая скорость без ограничений по трафику.\n"
+        "До 10 устройств одновременно.\n"
+        "Совместим с популярными VPN-клиентами."
     ),
-    "faq_jobs": (
-        "Вакансии\n\n"
-        "Мы растем. Напишите в поддержку, чтобы узнать о доступных ролях."
-    ),
-    "faq_support": "Техподдержка: {support}",
-    "faq_cancel": (
-        "Отмена подписки\n\n"
-        "Напишите в поддержку: {support}."
-    ),
-    "renew_3d": (
-        "Важно: подписка заканчивается через 3 дня. Продлите, чтобы не потерять доступ."
-    ),
-    "renew_1d": (
-        "Важно: подписка заканчивается завтра. Продлите сейчас, чтобы не было перерывов."
-    ),
+    "faq_jobs": "Вакансии\n\nМы растем. Напишите в поддержку по любым вопросам.",
+    "faq_support": "Тех. поддержка: {support}",
+    "faq_cancel": "Отменить подписку\n\nНапишите в поддержку: {support}.",
+    "renew_3d": "Важно: подписка закончится через 3 дня. Продлите доступ заранее.",
+    "renew_1d": "Важно: подписка закончится завтра. Продлите, чтобы избежать отключения.",
     "renew_0d": "Важно: подписка заканчивается сегодня. Продлите доступ.",
-    "renew_expired": (
-        "Подписка завершилась. Продлите, чтобы снова подключиться."
-    ),
+    "renew_expired": "Подписка закончилась. Продлите доступ, чтобы снова подключиться.",
     "referral_banner": "+1 месяц за друга",
     "invite_friend": (
         "Получите +1 месяц за каждого приглашенного друга, который стал PRO!\n\n"
         "Поделитесь сообщением:\n"
-        f"Я пользуюсь {BRAND_NAME}. Он убирает рекламу на YouTube и работает на всех устройствах.\n\n"
+        f"Я использую {BRAND_NAME}. Он убирает рекламу на YouTube и работает на всех устройствах.\n\n"
         "Ссылка:\n"
         "{ref_link}"
     ),
     "lang_switched": "Язык переключен на русский.",
-    "menu_hint": "Меню открыто. Выберите раздел.",
+    "menu_hint": "Меню внизу. Выберите раздел.",
     "support_banner": "Поддержка 24/7",
     "support_text": (
-        "Напишите нам в поддержку: {support}\n"
-        "Обычно отвечаем в течение нескольких минут."
+        "Напишите в поддержку: {support}\n"
+        "Отвечаем быстро и по делу."
     ),
     "channel_banner": "Канал GetniusVPN",
     "channel_text": "Новости, обновления и полезные советы: {channel}",
@@ -141,13 +134,12 @@ RU: Dict[str, str] = {
 EN: Dict[str, str] = {
     "welcome_banner": "Hi! Connect VPN in 1 minute.",
     "welcome_text": (
-        "{brand} is a fast and secure VPN using VLESS.\n"
-        "Paste the key into your app and pick a location.\n\n"
-        "Menu is in the keyboard - choose a section or install VPN now.\n\n"
+        "{brand} is a fast and secure VPN on VLESS.\n"
+        "Paste the key into the app and choose a location.\n\n"
         "Select your device:"
     ),
     "device_prompt": "Select your device:",
-    "steps_banner": "Connect in 1 click",
+    "steps_banner": "Connect in 3 steps",
     "android_setup": (
         "Android setup:\n"
         "1. Install Happ from Google Play or APK.\n"
@@ -166,7 +158,7 @@ EN: Dict[str, str] = {
         "If auto-setup fails:\n"
         "1. Copy your key:\n"
         "{key}\n"
-        "2. Open V2RayTUN, tap “+” → “Import from clipboard”.\n"
+        "2. Open V2RayTUN, tap “+” -> “Import from clipboard”.\n"
         "3. Choose a location and connect."
     ),
     "generic_setup": (
@@ -184,7 +176,8 @@ EN: Dict[str, str] = {
         "- 3 months: 270 RUB\n"
         "- 12 months: 960 RUB\n\n"
         f"Trial: {TRIAL_PRICE_RUB} for {TRIAL_DAYS} days.\n"
-        "Choose a plan to connect."
+        "PRO includes all features and max speed.\n"
+        "If payment went through but no key arrived — contact support."
     ),
     "pro_features": (
         "PRO features:\n"
@@ -198,26 +191,33 @@ EN: Dict[str, str] = {
         "Your key:\n"
         "{key}\n"
         "Tap the key to copy.\n\n"
+        "Plan: {plan}\n"
+        "Device limit: {limit}\n"
         "Traffic used: {traffic}\n"
         "Valid until: {expires}\n\n"
         "Get +1 month for each invited friend who becomes PRO.\n"
         "Share link:\n"
         "{ref_link}"
     ),
+    "profile_empty": (
+        "You don't have an active key yet.\n"
+        "Pay for a plan — the bot will issue the key automatically."
+    ),
+    "need_payment": "To get a key, choose a plan and complete payment.",
     "faq_main": "Choose a topic:",
     "faq_pro": "PRO includes max speed, all locations, and advanced features.",
     "faq_broken": (
         "Something doesn't work\n\n"
         "1. Refresh your key in the app.\n"
         "2. Switch location.\n"
-        "3. Try another client (e.g., V2RayTUN).\n\n"
+        "3. Try another client (Happ or V2RayTUN).\n\n"
         "If it still fails, contact support: {support}."
     ),
     "faq_about": (
         "{brand} is a fast and secure VPN.\n"
         "Full traffic encryption with VLESS.\n"
         "High speed with no traffic limits.\n"
-        "Up to 5 devices at once.\n"
+        "Up to 10 devices at once.\n"
         "Compatible with popular clients."
     ),
     "faq_jobs": "Jobs\n\nWe are growing. Contact support for open roles.",
@@ -238,10 +238,7 @@ EN: Dict[str, str] = {
     "lang_switched": "Language switched to English.",
     "menu_hint": "Menu opened. Choose a section.",
     "support_banner": "Support 24/7",
-    "support_text": (
-        "Contact support: {support}\n"
-        "We usually respond within minutes."
-    ),
+    "support_text": "Contact support: {support}\nWe usually respond within minutes.",
     "channel_banner": "GetniusVPN Channel",
     "channel_text": "Updates and tips: {channel}",
 }

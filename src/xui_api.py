@@ -8,6 +8,8 @@ from urllib.parse import urlencode, quote
 
 import aiohttp
 
+from .config import XUI_TIMEOUT_SECONDS
+
 
 @dataclass(frozen=True)
 class XuiInbound:
@@ -75,6 +77,7 @@ class XuiApi:
         self._session = aiohttp.ClientSession(
             cookie_jar=aiohttp.CookieJar(unsafe=True),
             connector=aiohttp.TCPConnector(ssl=verify_ssl),
+            timeout=aiohttp.ClientTimeout(total=XUI_TIMEOUT_SECONDS),
         )
         self._logged_in = False
 
