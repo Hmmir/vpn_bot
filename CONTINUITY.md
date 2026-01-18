@@ -1,5 +1,5 @@
 - Goal (incl. success criteria):
-  - Deliver GetniusVPN Telegram bot with onboarding, device setup, tariffs, profile, FAQ, referral, RU/EN, media cards, automated expiry reminders, support bot + channel integration, and confirm production readiness for real users.
+  - Deliver Lagom VPN Pro Telegram bot (@lagvpnbot) with onboarding, device setup, tariffs, profile, FAQ, referral, RU/EN, media cards, automated expiry reminders, support bot + channel integration, and confirm production readiness for real users.
 - Constraints/Assumptions:
   - Keep secrets out of git; use `.env` on server.
   - Use user-provided screenshots/copy; match competitor flow (2-column buttons) but rephrase branding.
@@ -8,6 +8,7 @@
   - Aiogram v3 bot; SQLite storage at `data/bot.db`; hourly reminder loop.
   - Media assets in `assets/` and helper mapping in `src/media.py`.
   - Support bot: `@GetniusSupport_bot`, channel: `https://t.me/genialvpn`, admin ID: `5795082902`.
+  - Branding defaults: `Lagom VPN Pro` and `@lagvpnbot`.
   - Manual testing now; planned payment provider: YooMoney (ЮMoney).
 - State:
   - Done:

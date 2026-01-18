@@ -11,8 +11,8 @@ def _get_env(name: str, default: str = "") -> str:
 
 
 BOT_TOKEN = _get_env("BOT_TOKEN")
-BRAND_NAME = _get_env("BRAND_NAME", "GetniusVPN")
-BOT_USERNAME = _get_env("BOT_USERNAME", "@GetniusVPN_bot")
+BRAND_NAME = _get_env("BRAND_NAME", "Lagom VPN Pro")
+BOT_USERNAME = _get_env("BOT_USERNAME", "@lagvpnbot")
 SUPPORT_BOT = _get_env("SUPPORT_BOT", "@GetniusSupport_bot")
 CHANNEL = _get_env("CHANNEL", "https://t.me/genialvpn")
 BASE_URL = _get_env("BASE_URL", "https://example.com")
