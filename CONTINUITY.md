@@ -7,7 +7,7 @@
 - Key decisions:
   - Aiogram v3 bot; SQLite storage at `data/bot.db`; hourly reminder loop.
   - Media assets in `assets/` and helper mapping in `src/media.py`.
-  - Support bot: `@GetniusSupport_bot`, channel: `@GetniusVPN`, admin ID: `5795082902`.
+  - Support bot: `@GetniusSupport_bot`, channel: `https://t.me/genialvpn`, admin ID: `5795082902`.
   - Manual testing now; planned payment provider: YooMoney (ЮMoney).
 - State:
   - Done:
@@ -34,7 +34,7 @@
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.
-    - Pull latest changes on server and restart bot(s).
+    - Pull latest changes on server (pricing update) and restart bot(s).
     - Configure `.env` on server with `XUI_INBOUND_IDS`, `CHECK_URL`, XUI timeout, healthcheck/updatecheck vars.
   - Next:
     - Wire payments + auto key issuance; add runbook/tests.
