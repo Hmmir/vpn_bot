@@ -41,17 +41,23 @@
     - Fixed garbled Cyrillic in `src/data.py`, `src/keyboards.py`, `src/texts.py`, `src/support_bot.py`.
     - Updated device flow so selection edits same message (no extra posts) and added V2RayTUN deep link.
     - Removed visible menu-open message; reply keyboard still shown via welcome message.
+    - Added V2RayA link option for macOS/Linux (`V2RAYA_URL`) and pushed commit `fbeb704`.
+    - Guarded message edits against “message is not modified” errors.
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.
-    - Pull latest changes on server (pricing update) and restart bot(s).
+    - Pull latest changes on server (commit `fbeb704`) and restart bot(s).
     - Configure `.env` on server with `XUI_INBOUND_IDS`, `CHECK_URL`, XUI timeout, healthcheck/updatecheck vars.
     - Replace bot media assets with new minimalistic images from `C:\\Users\\alien\\Desktop\\VPN\\photovpn`.
     - Update client links for macOS/Linux in `.env` (V2rayA) if desired.
+    - User reports server behavior unchanged; need to verify deploy (git pull + restart) and commit hash.
+    - User reports a button not working; need platform + button name + logs.
   - Next:
     - Wire payments + auto key issuance; add runbook/tests.
-- Open questions (UNCONFIRMED if needed):
-  - Support bot token, support admin chat ID (if different from admin ID).
-  - Final pricing, trial duration, renewal URL, YooMoney webhook format/signature.
+  - Open questions (UNCONFIRMED if needed):
+    - Support bot token, support admin chat ID (if different from admin ID).
+    - Final pricing, trial duration, renewal URL, YooMoney webhook format/signature.
+    - Which exact button fails (device select vs 1-click), on which platform, and what happens on tap.
+    - What exactly looks unchanged after deploy (device selection flow, menu line, or something else).
 - Working set (files/ids/commands):
   - `src/main.py`, `src/texts.py`, `src/keyboards.py`, `src/support_bot.py`, `src/issue.py`, `src/ops/*`, `.env.example`, `deploy/systemd/*`, `AUDIT.md`

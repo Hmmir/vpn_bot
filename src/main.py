@@ -5,6 +5,7 @@ from typing import Dict, Optional
 from urllib.parse import quote
 
 from aiogram import Bot, Dispatcher, Router, F
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery, InputMediaPhoto
 
@@ -166,19 +167,23 @@ async def edit_asset_message(
     reply_markup=None,
 ) -> None:
     asset = asset_file(key)
-    if message.photo:
+    try:
+        if message.photo:
+            if asset:
+                await message.edit_media(
+                    InputMediaPhoto(media=asset, caption=caption),
+                    reply_markup=reply_markup,
+                )
+            else:
+                await message.edit_caption(caption=caption, reply_markup=reply_markup)
+            return
         if asset:
-            await message.edit_media(
-                InputMediaPhoto(media=asset, caption=caption),
-                reply_markup=reply_markup,
-            )
-        else:
-            await message.edit_caption(caption=caption, reply_markup=reply_markup)
-        return
-    if asset:
-        await message.answer_photo(asset, caption=caption, reply_markup=reply_markup)
-        return
-    await message.edit_text(caption, reply_markup=reply_markup)
+            await message.answer_photo(asset, caption=caption, reply_markup=reply_markup)
+            return
+        await message.edit_text(caption, reply_markup=reply_markup)
+    except TelegramBadRequest as exc:
+        if "message is not modified" not in str(exc):
+            raise
 
 
 async def edit_text_message(
@@ -186,10 +191,14 @@ async def edit_text_message(
     text: str,
     reply_markup=None,
 ) -> None:
-    if message.photo:
-        await message.edit_caption(caption=text, reply_markup=reply_markup)
-        return
-    await message.edit_text(text, reply_markup=reply_markup)
+    try:
+        if message.photo:
+            await message.edit_caption(caption=text, reply_markup=reply_markup)
+            return
+        await message.edit_text(text, reply_markup=reply_markup)
+    except TelegramBadRequest as exc:
+        if "message is not modified" not in str(exc):
+            raise
 
 
 @router.message(CommandStart())
