@@ -242,7 +242,7 @@ def v2ray_actions_kb(lang: str, v2ray_url: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
 
-def plans_kb(lang: str) -> InlineKeyboardMarkup:
+def plans_kb(lang: str, include_menu: bool = False) -> InlineKeyboardMarkup:
     rows = []
     for plan in PLANS:
         title = plan.title_en if lang == "en" else plan.title_ru
@@ -252,6 +252,9 @@ def plans_kb(lang: str) -> InlineKeyboardMarkup:
     if support_url:
         text = "Payment issue" if lang == "en" else "Проблема с оплатой"
         rows.append([InlineKeyboardButton(text=text, url=support_url)])
+    if include_menu:
+        text = "Other devices" if lang == "en" else "Другие устройства"
+        rows.append([InlineKeyboardButton(text=text, callback_data="menu")])
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
 

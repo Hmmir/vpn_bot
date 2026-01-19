@@ -64,6 +64,8 @@
     - Reverted /start to show welcome only; device prompt via “Установить VPN”.
     - Pushed commit `15b655b` to origin with /start welcome-only behavior.
     - Re-added device prompt after /start and aligned welcome text to competitor wording (ВПН).
+    - Pushed commit `b7eeac7` to origin with /start device prompt restored.
+    - Added "Другие устройства" button to no-key device flows.
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.

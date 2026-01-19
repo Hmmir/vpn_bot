@@ -403,7 +403,11 @@ async def cb_device(callback: CallbackQuery) -> None:
             happ_url=HAPP_URL,
             happ_apk_suffix=apk_suffix,
         )
-        reply_markup = android_actions_kb(lang, one_click) if has_key else plans_kb(lang)
+        reply_markup = (
+            android_actions_kb(lang, one_click)
+            if has_key
+            else plans_kb(lang, include_menu=True)
+        )
     elif code == "ios":
         one_click = build_one_click_url(
             happ_deeplink(sub_url),
@@ -416,7 +420,9 @@ async def cb_device(callback: CallbackQuery) -> None:
             happ_ios_url=HAPP_IOS_URL,
             happ_ios_alt_suffix=ios_alt_suffix,
         )
-        reply_markup = ios_actions_kb(lang, one_click) if has_key else plans_kb(lang)
+        reply_markup = (
+            ios_actions_kb(lang, one_click) if has_key else plans_kb(lang, include_menu=True)
+        )
     elif code == "windows":
         one_click = build_one_click_url(
             flclash_deeplink(sub_url),
@@ -428,7 +434,11 @@ async def cb_device(callback: CallbackQuery) -> None:
             flclash_url=FLCLASH_URL,
             sub_url=sub_url,
         )
-        reply_markup = desktop_actions_kb(lang, one_click) if has_key else plans_kb(lang)
+        reply_markup = (
+            desktop_actions_kb(lang, one_click)
+            if has_key
+            else plans_kb(lang, include_menu=True)
+        )
     elif code == "macos":
         one_click = build_one_click_url(
             happ_deeplink(sub_url),
@@ -442,7 +452,9 @@ async def cb_device(callback: CallbackQuery) -> None:
             happ_ios_alt_suffix=ios_alt_suffix,
         )
         reply_markup = (
-            macos_actions_kb(lang, one_click, SINGBOX_URL) if has_key else plans_kb(lang)
+            macos_actions_kb(lang, one_click, SINGBOX_URL)
+            if has_key
+            else plans_kb(lang, include_menu=True)
         )
     elif code == "linux":
         one_click = build_one_click_url(
@@ -455,7 +467,11 @@ async def cb_device(callback: CallbackQuery) -> None:
             flclash_url=FLCLASH_URL,
             sub_url=sub_url,
         )
-        reply_markup = desktop_actions_kb(lang, one_click) if has_key else plans_kb(lang)
+        reply_markup = (
+            desktop_actions_kb(lang, one_click)
+            if has_key
+            else plans_kb(lang, include_menu=True)
+        )
     elif code == "android_tv":
         text = t(
             lang,
@@ -463,13 +479,19 @@ async def cb_device(callback: CallbackQuery) -> None:
             happ_url=HAPP_URL,
             happ_apk_suffix=apk_suffix,
         )
-        reply_markup = android_tv_actions_kb(lang) if has_key else plans_kb(lang)
+        reply_markup = (
+            android_tv_actions_kb(lang) if has_key else plans_kb(lang, include_menu=True)
+        )
     elif code == "apple_tv":
         text = t(
             lang,
             "apple_tv_setup" if has_key else "apple_tv_setup_no_key",
         )
-        reply_markup = apple_tv_actions_kb(lang, SINGBOX_URL) if has_key else plans_kb(lang)
+        reply_markup = (
+            apple_tv_actions_kb(lang, SINGBOX_URL)
+            if has_key
+            else plans_kb(lang, include_menu=True)
+        )
     else:
         devices = DEVICES_EN if lang == "en" else DEVICES_RU
         device_title = dict(devices).get(code, code)
@@ -479,7 +501,7 @@ async def cb_device(callback: CallbackQuery) -> None:
             device=device_title,
             client_line=client_line(lang, code),
         )
-        reply_markup = plans_kb(lang) if not has_key else None
+        reply_markup = plans_kb(lang, include_menu=True) if not has_key else None
     await edit_text_message(callback.message, text, reply_markup=reply_markup)
     await callback.answer()
 
@@ -501,7 +523,11 @@ async def cb_android_v2ray(callback: CallbackQuery) -> None:
             key=key,
             v2raytun_url=V2RAYTUN_URL,
         ),
-        reply_markup=v2ray_actions_kb(lang, one_click) if has_key else plans_kb(lang),
+        reply_markup=(
+            v2ray_actions_kb(lang, one_click)
+            if has_key
+            else plans_kb(lang, include_menu=True)
+        ),
     )
     await callback.answer()
 
