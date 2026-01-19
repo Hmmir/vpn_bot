@@ -45,6 +45,7 @@ from .keyboards import (
     android_tv_actions_kb,
     apple_tv_actions_kb,
     v2ray_actions_kb,
+    other_devices_kb,
     plans_kb,
     faq_kb,
     renew_kb,
@@ -527,7 +528,7 @@ async def cb_device(callback: CallbackQuery) -> None:
             device=device_title,
             client_line=client_line(lang, code),
         )
-        reply_markup = None
+        reply_markup = other_devices_kb(lang)
     await edit_text_message(
         callback.message,
         text,

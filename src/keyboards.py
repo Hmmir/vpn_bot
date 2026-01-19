@@ -62,6 +62,13 @@ def device_kb(lang: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
 
+def other_devices_kb(lang: str) -> InlineKeyboardMarkup:
+    text = "Other devices" if lang == "en" else "Другие устройства"
+    return InlineKeyboardMarkup(
+        inline_keyboard=[[InlineKeyboardButton(text=text, callback_data="menu")]]
+    )
+
+
 def help_device_kb(lang: str) -> InlineKeyboardMarkup:
     rows = []
     devices = DEVICES_EN if lang == "en" else DEVICES_RU
