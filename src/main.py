@@ -419,8 +419,6 @@ async def cb_device(callback: CallbackQuery) -> None:
     apk_suffix = happ_apk_suffix(lang)
     ios_alt_suffix = happ_ios_alt_suffix(lang)
     key_link = html_link(key, key)
-    happ_key = happ_deeplink(sub_url)
-    happ_key_link = happ_key or key_link
     sub_url_link = html_link(sub_url, sub_url)
     happ_gp = html_link("Google Play", HAPP_URL)
     happ_apk = html_link("APK-файл", HAPP_APK_URL)
@@ -437,7 +435,7 @@ async def cb_device(callback: CallbackQuery) -> None:
         text = t(
             lang,
             "android_setup",
-            key_link=happ_key_link,
+            key_link=key_link,
             happ_gp=happ_gp,
             happ_apk=happ_apk,
             happ_url=HAPP_URL,
@@ -452,7 +450,7 @@ async def cb_device(callback: CallbackQuery) -> None:
         text = t(
             lang,
             "ios_setup",
-            key_link=happ_key_link,
+            key_link=key_link,
             happ_ios_ru=happ_ios_ru,
             happ_ios_alt=happ_ios_alt,
             happ_ios_url=HAPP_IOS_URL,
@@ -481,7 +479,7 @@ async def cb_device(callback: CallbackQuery) -> None:
         text = t(
             lang,
             "macos_setup",
-            key_link=happ_key_link,
+            key_link=key_link,
             happ_ios_ru=happ_ios_ru,
             happ_ios_alt=happ_ios_alt,
             happ_ios_url=HAPP_IOS_URL,
