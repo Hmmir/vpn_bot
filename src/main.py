@@ -149,6 +149,8 @@ def build_one_click_url(deeplink: str, fallback_url: str) -> str:
         return fallback_url
     if deeplink.startswith(("http://", "https://")):
         return deeplink
+    if not DEEPLINK_REDIRECT_URL:
+        return fallback_url
     return redirect_deeplink(deeplink)
 
 
