@@ -76,7 +76,7 @@
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.
-    - Pull latest changes on server (commit `c8bf4ae`) and restart bot(s).
+    - Pull latest changes on server (latest origin/main) and restart bot(s).
     - Configure `.env` on server with `XUI_INBOUND_IDS`, `CHECK_URL`, XUI timeout, healthcheck/updatecheck vars.
     - Update client links for macOS/Linux in `.env` (V2rayA) if desired.
     - Fill new envs: `DEEPLINK_REDIRECT_URL`, `HAPP_IOS_URL`, `HAPP_IOS_ALT_URL`, `HAPP_APK_URL`, `FLCLASH_URL`, `SINGBOX_URL`, `V2RAYTUN_URL` (use our data; user doesn't know values).
@@ -85,7 +85,7 @@
     - User asked for server code; provide minimal systemd + nginx setup snippet for webhook/redirect.
     - User asked for exact server update commands (git pull + .env + restart services).
     - User reports server still running old code; need to verify service path/commit and restart.
-    - Server currently on commit `232afae`; needs `git pull` to get `c8bf4ae` and restart services.
+    - Server currently on commit `232afae`; needs `git pull` to get latest origin/main and restart services.
     - Deploy latest commit with inline device links and updated instructions; verify device flows.
   - Next:
     - Wire payments + auto key issuance; add runbook/tests.
