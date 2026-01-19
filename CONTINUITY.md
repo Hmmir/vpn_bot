@@ -14,7 +14,7 @@
   - Device install screens edit in place (single message) to match competitor flow.
   - 1-click links now support app deep links wrapped via `DEEPLINK_REDIRECT_URL`; per-device copy updated to match screenshots.
   - If no public domain is available, `DEEPLINK_REDIRECT_URL` stays empty and direct app deeplinks are used.
-  - Start flow should show competitor-style welcome text only; device prompt appears after pressing “Установить VPN”.
+  - Start flow should show competitor-style welcome text and device prompt after /start; device selection edits the same message.
 - State:
   - Done:
     - Added media cards (welcome/pricing/pro/referral/steps) and updated bot flows to send images.
@@ -62,6 +62,8 @@
     - Pushed commit `78b5bb3` to origin with /start flow + edit-in-place changes.
     - Pushed commit `a7a796f` to origin to show device prompt after /start.
     - Reverted /start to show welcome only; device prompt via “Установить VPN”.
+    - Pushed commit `15b655b` to origin with /start welcome-only behavior.
+    - Re-added device prompt after /start and aligned welcome text to competitor wording (ВПН).
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.
