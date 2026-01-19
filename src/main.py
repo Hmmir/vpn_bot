@@ -264,13 +264,7 @@ async def edit_text_message(
 async def cmd_start(message: Message) -> None:
     lang = get_lang(message.from_user.id)
     upsert_user(message.from_user.id, lang)
-    await send_asset(
-        message,
-        "welcome",
-        None,
-        reply_markup=main_menu_kb(lang),
-    )
-    await message.answer(t(lang, "device_prompt"), reply_markup=device_kb(lang))
+    await message.answer(t(lang, "welcome_text"), reply_markup=main_menu_kb(lang))
 
 
 @router.message(F.text.in_(["Установить VPN", "Install VPN"]))
@@ -378,7 +372,8 @@ async def switch_to_russian(message: Message) -> None:
 async def cb_menu(callback: CallbackQuery) -> None:
     lang = get_lang(callback.from_user.id)
     upsert_user(callback.from_user.id, lang)
-    await callback.message.answer(
+    await edit_text_message(
+        callback.message,
         t(lang, "device_prompt"),
         reply_markup=device_kb(lang),
     )
@@ -484,7 +479,7 @@ async def cb_device(callback: CallbackQuery) -> None:
             client_line=client_line(lang, code),
         )
         reply_markup = plans_kb(lang) if not has_key else None
-    await callback.message.answer(text, reply_markup=reply_markup)
+    await edit_text_message(callback.message, text, reply_markup=reply_markup)
     await callback.answer()
 
 
@@ -497,7 +492,8 @@ async def cb_android_v2ray(callback: CallbackQuery) -> None:
     sub_url = sub_url or SUBSCRIPTION_URL
     deeplink = v2raytun_deeplink(sub_url)
     one_click = build_one_click_url(deeplink, V2RAY_URL or sub_url)
-    await callback.message.answer(
+    await edit_text_message(
+        callback.message,
         t(
             lang,
             "android_v2ray" if has_key else "android_v2ray_no_key",
