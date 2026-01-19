@@ -265,7 +265,6 @@ async def cmd_start(message: Message) -> None:
     lang = get_lang(message.from_user.id)
     upsert_user(message.from_user.id, lang)
     await message.answer(t(lang, "welcome_text"), reply_markup=main_menu_kb(lang))
-    await message.answer(t(lang, "device_prompt"), reply_markup=device_kb(lang))
 
 
 @router.message(F.text.in_(["Установить VPN", "Install VPN"]))

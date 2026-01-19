@@ -11,10 +11,10 @@
   - Support bot: `@GetniusSupport_bot`, channel: `https://t.me/genialvpn`, admin ID: `5795082902`.
   - Branding defaults: `Lagom VPN Pro` and `@lagvpnbot`.
   - Manual testing now; planned payment provider: YooMoney.
-  - Device install screens now send new messages (no edit-in-place) to match competitor flow.
+  - Device install screens edit in place (single message) to match competitor flow.
   - 1-click links now support app deep links wrapped via `DEEPLINK_REDIRECT_URL`; per-device copy updated to match screenshots.
   - If no public domain is available, `DEEPLINK_REDIRECT_URL` stays empty and direct app deeplinks are used.
-  - Start flow should show competitor-style welcome text and then device prompt; device selection edits the same message.
+  - Start flow should show competitor-style welcome text only; device prompt appears after pressing “Установить VPN”.
 - State:
   - Done:
     - Added media cards (welcome/pricing/pro/referral/steps) and updated bot flows to send images.
@@ -60,6 +60,8 @@
     - Restored brand default to Lagom VPN Pro and aligned /start welcome text with competitor copy.
     - Reverted device selection to edit-in-place (no new posts).
     - Pushed commit `78b5bb3` to origin with /start flow + edit-in-place changes.
+    - Pushed commit `a7a796f` to origin to show device prompt after /start.
+    - Reverted /start to show welcome only; device prompt via “Установить VPN”.
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.
@@ -73,7 +75,6 @@
     - User asked for exact server update commands (git pull + .env + restart services).
     - User reports server still running old code; need to verify service path/commit and restart.
     - Server currently on commit `232afae`; needs `git pull` to get latest commit and restart services.
-    - User wants “Выберите ваше устройство” shown after /start.
     - User reports server behavior unchanged; need to verify deploy (git pull + restart) and commit hash.
     - User reports a button not working; need platform + button name + logs.
   - Next:
