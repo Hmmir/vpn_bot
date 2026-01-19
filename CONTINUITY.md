@@ -1,5 +1,5 @@
 - Goal (incl. success criteria):
-  - Match competitor install + 1‑click flows (from `C:\Users\alien\Desktop\VPN\photovpn`) using our data only; ensure new-message behavior and self-help flow align with screenshots without changing assets.
+  - Match competitor install + 1-click flows (from `C:\Users\alien\Desktop\VPN\photovpn`) using our data only; device text matches screenshots 1:1 with inline clickable links; device selection edits one message; no asset changes.
 - Constraints/Assumptions:
   - Keep secrets out of git; use `.env` on server.
   - Use user-provided screenshots/copy; match competitor flow (2-column buttons) but rephrase branding.
@@ -15,6 +15,8 @@
   - 1-click links now support app deep links wrapped via `DEEPLINK_REDIRECT_URL`; per-device copy updated to match screenshots.
   - If no public domain is available, `DEEPLINK_REDIRECT_URL` stays empty and direct app deeplinks are used.
   - Start flow should show competitor-style welcome text and device prompt after /start; device selection edits the same message.
+  - Use HTML parse_mode to embed inline links in device instructions; disable web previews.
+  - Device instructions do not gate on having a key; always show full steps with key/sub link placeholder.
 - State:
   - Done:
     - Added media cards (welcome/pricing/pro/referral/steps) and updated bot flows to send images.
@@ -66,21 +68,24 @@
     - Re-added device prompt after /start and aligned welcome text to competitor wording (ВПН).
     - Pushed commit `b7eeac7` to origin with /start device prompt restored.
     - Added "Другие устройства" button to no-key device flows.
+    - Pushed commit `982126a` to origin with no-key device menu button.
+    - Updated device instructions to match screenshots 1:1 with inline HTML links.
+    - Removed key gating in device handlers; device instructions always show full steps.
+    - Device instruction edits now use HTML parse mode with web previews disabled.
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.
     - Pull latest changes on server (commit `fbeb704`) and restart bot(s).
     - Configure `.env` on server with `XUI_INBOUND_IDS`, `CHECK_URL`, XUI timeout, healthcheck/updatecheck vars.
     - Update client links for macOS/Linux in `.env` (V2rayA) if desired.
-    - Fill new envs: `DEEPLINK_REDIRECT_URL`, `HAPP_IOS_URL`, `HAPP_IOS_ALT_URL`, `HAPP_APK_URL`, `FLCLASH_URL`, `SINGBOX_URL` (use our data; user doesn’t know values).
+    - Fill new envs: `DEEPLINK_REDIRECT_URL`, `HAPP_IOS_URL`, `HAPP_IOS_ALT_URL`, `HAPP_APK_URL`, `FLCLASH_URL`, `SINGBOX_URL`, `V2RAYTUN_URL` (use our data; user doesn't know values).
     - Deploy webhook change if using redirect endpoint.
     - User doesn’t know public domain for redirect; proceed without `DEEPLINK_REDIRECT_URL` unless provided.
     - User asked for server code; provide minimal systemd + nginx setup snippet for webhook/redirect.
     - User asked for exact server update commands (git pull + .env + restart services).
     - User reports server still running old code; need to verify service path/commit and restart.
-    - Server currently on commit `232afae`; needs `git pull` to get latest commit and restart services.
-    - User reports server behavior unchanged; need to verify deploy (git pull + restart) and commit hash.
-    - User reports a button not working; need platform + button name + logs.
+    - Server currently on commit `232afae`; needs `git pull` to get `982126a` and restart services.
+    - Deploy latest commit with inline device links and updated instructions; verify device flows.
   - Next:
     - Wire payments + auto key issuance; add runbook/tests.
   - Open questions (UNCONFIRMED if needed):
