@@ -14,7 +14,7 @@
   - Device install screens now send new messages (no edit-in-place) to match competitor flow.
   - 1-click links now support app deep links wrapped via `DEEPLINK_REDIRECT_URL`; per-device copy updated to match screenshots.
   - If no public domain is available, `DEEPLINK_REDIRECT_URL` stays empty and direct app deeplinks are used.
-  - Start flow now shows competitor-style welcome text and no immediate device prompt; device selection edits the same message.
+  - Start flow should show competitor-style welcome text and then device prompt; device selection edits the same message.
 - State:
   - Done:
     - Added media cards (welcome/pricing/pro/referral/steps) and updated bot flows to send images.
@@ -59,6 +59,7 @@
     - Pushed commit `47bf5b4` to origin with install flow + deeplink + self-help updates.
     - Restored brand default to Lagom VPN Pro and aligned /start welcome text with competitor copy.
     - Reverted device selection to edit-in-place (no new posts).
+    - Pushed commit `78b5bb3` to origin with /start flow + edit-in-place changes.
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.
@@ -72,6 +73,7 @@
     - User asked for exact server update commands (git pull + .env + restart services).
     - User reports server still running old code; need to verify service path/commit and restart.
     - Server currently on commit `232afae`; needs `git pull` to get latest commit and restart services.
+    - User wants “Выберите ваше устройство” shown after /start.
     - User reports server behavior unchanged; need to verify deploy (git pull + restart) and commit hash.
     - User reports a button not working; need platform + button name + logs.
   - Next:
