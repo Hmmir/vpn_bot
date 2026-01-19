@@ -89,7 +89,7 @@ def client_line(lang: str, device_code: str) -> str:
         label = "Happ"
         url = HAPP_URL
     elif device_code == "apple_tv":
-        label = "Подключение через роутер" if lang != "en" else "Router setup"
+        label = "Настройка роутера" if lang != "en" else "Router setup"
         url = ROUTER_URL
     elif device_code == "router":
         label = "OpenWrt"
@@ -157,17 +157,17 @@ def build_one_click_url(deeplink: str, fallback_url: str) -> str:
 def happ_apk_suffix(lang: str) -> str:
     if not HAPP_APK_URL:
         return ""
-    return f" or APK file {HAPP_APK_URL}" if lang == "en" else f" или «APK-файл» {HAPP_APK_URL}"
+    if lang == "en":
+        return f" or APK file {HAPP_APK_URL}"
+    return f" или «APK-файл» {HAPP_APK_URL}"
 
 
 def happ_ios_alt_suffix(lang: str) -> str:
     if not HAPP_IOS_ALT_URL:
         return ""
-    return (
-        f" (Happ for other regions {HAPP_IOS_ALT_URL})"
-        if lang == "en"
-        else f" (Happ для других регионов {HAPP_IOS_ALT_URL})"
-    )
+    if lang == "en":
+        return f" (Happ for other regions {HAPP_IOS_ALT_URL})"
+    return f" (Happ для других регионов {HAPP_IOS_ALT_URL})"
 
 
 def get_lang(user_id: int) -> str:
@@ -419,6 +419,8 @@ async def cb_device(callback: CallbackQuery) -> None:
     apk_suffix = happ_apk_suffix(lang)
     ios_alt_suffix = happ_ios_alt_suffix(lang)
     key_link = html_link(key, key)
+    happ_key = happ_deeplink(sub_url)
+    happ_key_link = happ_key or key_link
     sub_url_link = html_link(sub_url, sub_url)
     happ_gp = html_link("Google Play", HAPP_URL)
     happ_apk = html_link("APK-файл", HAPP_APK_URL)
@@ -435,7 +437,7 @@ async def cb_device(callback: CallbackQuery) -> None:
         text = t(
             lang,
             "android_setup",
-            key_link=key_link,
+            key_link=happ_key_link,
             happ_gp=happ_gp,
             happ_apk=happ_apk,
             happ_url=HAPP_URL,
@@ -450,7 +452,7 @@ async def cb_device(callback: CallbackQuery) -> None:
         text = t(
             lang,
             "ios_setup",
-            key_link=key_link,
+            key_link=happ_key_link,
             happ_ios_ru=happ_ios_ru,
             happ_ios_alt=happ_ios_alt,
             happ_ios_url=HAPP_IOS_URL,
@@ -479,7 +481,7 @@ async def cb_device(callback: CallbackQuery) -> None:
         text = t(
             lang,
             "macos_setup",
-            key_link=key_link,
+            key_link=happ_key_link,
             happ_ios_ru=happ_ios_ru,
             happ_ios_alt=happ_ios_alt,
             happ_ios_url=HAPP_IOS_URL,
