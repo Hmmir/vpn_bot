@@ -16,6 +16,7 @@ BOT_USERNAME = _get_env("BOT_USERNAME", "@lagvpnbot")
 SUPPORT_BOT = _get_env("SUPPORT_BOT", "@GetniusSupport_bot")
 CHANNEL = _get_env("CHANNEL", "https://t.me/genialvpn")
 BASE_URL = _get_env("BASE_URL", "https://example.com")
+DEEPLINK_REDIRECT_URL = _get_env("DEEPLINK_REDIRECT_URL", "")
 ONE_CLICK_URL = _get_env("ONE_CLICK_URL", "https://example.com/one-click")
 V2RAY_URL = _get_env("V2RAY_URL", "https://example.com/v2ray")
 CHECK_URL = _get_env("CHECK_URL", "https://check-host.net/check-ping")
@@ -23,10 +24,20 @@ HAPP_URL = _get_env(
     "HAPP_URL",
     "https://play.google.com/store/apps/details?id=com.happproxy",
 )
+HAPP_APK_URL = _get_env("HAPP_APK_URL", "https://happ.info/")
+HAPP_IOS_URL = _get_env(
+    "HAPP_IOS_URL",
+    "https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973",
+)
+HAPP_IOS_ALT_URL = _get_env(
+    "HAPP_IOS_ALT_URL",
+    "https://apps.apple.com/us/app/happ-proxy-utility/id6504287215",
+)
 V2RAYTUN_URL = _get_env(
     "V2RAYTUN_URL",
     "https://play.google.com/store/apps/details?id=com.v2raytun.android",
 )
+FLCLASH_URL = _get_env("FLCLASH_URL", "https://flclash.cc/")
 V2RAYN_URL = _get_env(
     "V2RAYN_URL",
     "https://github.com/2dust/v2rayN/releases",
@@ -39,6 +50,7 @@ IOS_V2RAYTUN_URL = _get_env(
     "IOS_V2RAYTUN_URL",
     "https://apps.apple.com/us/app/v2raytun/id6476628951",
 )
+SINGBOX_URL = _get_env("SINGBOX_URL", "https://sing-box.sagernet.org/clients/apple/")
 ROUTER_URL = _get_env("ROUTER_URL", "https://openwrt.org/")
 PRIVACY_EMAIL = _get_env("PRIVACY_EMAIL", "support@example.com")
 DEFAULT_KEY = _get_env("DEFAULT_KEY", "vless://REPLACE_ME")

@@ -26,37 +26,156 @@ RU: Dict[str, str] = {
     "steps_banner": "Подключение в 3 шага",
     "android_setup": (
         "Для настройки VPN на Android:\n"
-        "1. Скачайте Happ из Google Play или APK-файл: {happ_url}\n"
+        "1. Скачайте Happ из «Google Play» {happ_url}{happ_apk_suffix}.\n"
         "2. Нажмите на кнопку ниже, чтобы Подключиться в 1 клик!\n\n"
-        "Если автоматическая настройка не сработала:\n"
-        "1. Скопируйте ключ:\n"
+        "Если автоматическая настройка не сработала, следуйте инструкции:\n"
+        "1. Скопируйте ключ, нажав на него:\n"
         "{key}\n"
         "2. Откройте Happ и нажмите кнопку Вставить/Из буфера.\n"
         "3. Выберите локацию и подключитесь.\n\n"
-        "Если приложение не работает, рекомендуем V2RayTUN: {v2raytun_url}"
+        "Если данное приложение у вас не работает, то рекомендуем настроить V2RayTUN по кнопке."
     ),
     "android_setup_no_key": (
         "Для настройки VPN на Android:\n"
-        "1. Скачайте Happ из Google Play или APK-файл: {happ_url}\n"
+        "1. Скачайте Happ из «Google Play» {happ_url}{happ_apk_suffix}.\n"
         "2. Оплатите тариф — ключ появится в профиле.\n"
         "3. Вставьте ключ и подключитесь.\n\n"
-        "Если приложение не работает, рекомендуем V2RayTUN: {v2raytun_url}"
+        "Если данное приложение у вас не работает, то рекомендуем настроить V2RayTUN по кнопке."
     ),
     "android_v2ray": (
-        "Для настройки VPN через V2RayTUN:\n"
-        "1. Установите V2RayTUN: {v2raytun_url}\n"
-        "2. Нажмите кнопку ниже, чтобы Подключиться в 1 клик!\n\n"
-        "Если автоматическая настройка не сработала:\n"
-        "1. Скопируйте ключ:\n"
+        "Для настройки VPN на Android:\n"
+        "1. Скачайте V2RayTUN из «Google Play» или «APK-файл»: {v2raytun_url}\n"
+        "2. Нажмите на кнопку ниже, чтобы Подключиться в 1 клик!\n\n"
+        "Если автоматическая настройка не сработала, следуйте инструкции:\n"
+        "1. Скопируйте ключ, нажав на него:\n"
         "{key}\n"
-        "2. Откройте V2RayTUN, нажмите “+” и выберите “Импорт из буфера”.\n"
-        "3. Выберите локацию и подключитесь."
+        "2. Откройте V2RayTUN, в правом верхнем углу нажмите кнопку «+».\n"
+        "3. Выберите «Импорт из буфера обмена».\n"
+        "4. Выберите локацию и нажмите синюю кнопку.\n"
+        "5. Разрешите подключение."
     ),
     "android_v2ray_no_key": (
-        "Для настройки VPN через V2RayTUN:\n"
+        "Для настройки VPN на Android через V2RayTUN:\n"
         "1. Установите V2RayTUN: {v2raytun_url}\n"
         "2. Оплатите тариф — ключ появится в профиле.\n"
         "3. Импортируйте ключ и подключитесь."
+    ),
+    "ios_setup": (
+        "Для настройки VPN на iPhone:\n"
+        "1. Скачайте Happ для России {happ_ios_url}{happ_ios_alt_suffix}.\n"
+        "2. Нажмите на кнопку ниже, чтобы Подключиться в 1 клик!\n\n"
+        "Если автоматическая настройка не сработала, следуйте инструкции:\n"
+        "1. Скопируйте ключ, нажав на него:\n"
+        "{key}\n"
+        "2. Откройте Happ и нажмите кнопку Вставить/Из буфера.\n"
+        "3. Выберите локацию и подключитесь."
+    ),
+    "ios_setup_no_key": (
+        "Для настройки VPN на iPhone:\n"
+        "1. Скачайте Happ для России {happ_ios_url}{happ_ios_alt_suffix}.\n"
+        "2. Оплатите тариф — ключ появится в профиле.\n"
+        "3. Вставьте ключ и подключитесь."
+    ),
+    "windows_setup": (
+        "Для настройки VPN на Windows:\n"
+        "1. Скачайте FlClash: {flclash_url}\n"
+        "2. Нажмите на кнопку ниже, чтобы Подключиться в 1 клик!\n"
+        "3. Нажмите кнопку ▶ в нижнем правом углу для включения VPN. "
+        "Выбрать локацию можно внутри раздела Прокси.\n\n"
+        "Если автоматическая настройка не сработала, следуйте инструкции:\n"
+        "1. Скопируйте ключ, нажав на него:\n"
+        "{sub_url}\n"
+        "2. Откройте FlClash и перейдите в раздел Профили.\n"
+        "3. Нажмите плюс в нижнем углу и выберите URL.\n"
+        "4. В появившемся окне вставьте скопированный ключ.\n"
+        "5. Перейдите в раздел Прокси и выберите нужную локацию.\n"
+        "6. Далее перейдите на Панель управления и нажмите кнопку ▶ в нижнем правом "
+        "углу для включения VPN."
+    ),
+    "windows_setup_no_key": (
+        "Для настройки VPN на Windows:\n"
+        "1. Скачайте FlClash: {flclash_url}\n"
+        "2. Оплатите тариф — ключ появится в профиле.\n"
+        "3. Добавьте ключ в FlClash и подключитесь."
+    ),
+    "macos_setup": (
+        "Для настройки VPN на Macbook (от 2020 года):\n"
+        "1. Скачайте Happ для России {happ_ios_url}{happ_ios_alt_suffix}.\n"
+        "2. Нажмите на кнопку ниже, чтобы Подключиться в 1 клик!\n\n"
+        "Если автоматическая настройка не сработала, следуйте инструкции:\n"
+        "1. Скопируйте ключ, нажав на него:\n"
+        "{key}\n"
+        "2. Откройте Happ и нажмите кнопку Вставить/Из буфера.\n"
+        "3. Выберите локацию и подключитесь.\n\n"
+        "Если данное приложение у вас не работает или ваш Macbook выпущен до 2020 года, "
+        "то рекомендуем настроить Sing-box."
+    ),
+    "macos_setup_no_key": (
+        "Для настройки VPN на Macbook (от 2020 года):\n"
+        "1. Скачайте Happ для России {happ_ios_url}{happ_ios_alt_suffix}.\n"
+        "2. Оплатите тариф — ключ появится в профиле.\n"
+        "3. Вставьте ключ и подключитесь.\n\n"
+        "Если данное приложение у вас не работает или ваш Macbook выпущен до 2020 года, "
+        "то рекомендуем настроить Sing-box."
+    ),
+    "linux_setup": (
+        "Для подключения VPN на Linux:\n"
+        "1. Скачайте «FlClash»: {flclash_url}\n"
+        "2. Нажмите на кнопку ниже, чтобы Подключиться в 1 клик!\n\n"
+        "Если автоматическая настройка не сработала, следуйте инструкции:\n"
+        "1. Скопируйте ключ, нажав на него:\n"
+        "{sub_url}\n"
+        "2. Откройте FlClash и перейдите в раздел Профили.\n"
+        "3. Нажмите плюс в нижнем углу и выберите URL.\n"
+        "4. В появившемся окне вставьте скопированный ключ.\n"
+        "5. Перейдите в раздел Прокси и выберите нужную локацию.\n"
+        "6. Далее перейдите на Панель управления.\n"
+        "7. Убедитесь, что у вас включен TUN, а также установлен "
+        "«Режим исходящего трафика» Глобальный.\n"
+        "8. Нажмите кнопку ▶ в нижнем правом углу для включения VPN."
+    ),
+    "linux_setup_no_key": (
+        "Для подключения VPN на Linux:\n"
+        "1. Скачайте «FlClash»: {flclash_url}\n"
+        "2. Оплатите тариф — ключ появится в профиле.\n"
+        "3. Добавьте ключ в FlClash и подключитесь."
+    ),
+    "android_tv_setup": (
+        "Если у вас телевизор с USB-разъёмом, рекомендуем подключить мышь — так удобнее.\n\n"
+        "1. На TV откройте Google Play и установите приложение Happ из «Google Play» "
+        "{happ_url}{happ_apk_suffix}.\n"
+        "2. Откройте Happ на TV — появится QR-код.\n"
+        "3. Откройте Happ на телефоне, нажмите кнопку QR-код и отсканируйте QR-код с TV.\n"
+        "4. На телефоне появится окно выбора ключей, выберите {brand} и нажмите Отправить.\n"
+        "5. На TV нажмите кнопку пропустить — на главной в Happ появятся локации и "
+        "кнопка включения.\n"
+        "6. Нажмите на нее и выдайте разрешение, чтобы подключиться к VPN.\n\n"
+        "Если у вас что-то не получается, попробуйте альтернативный способ настройки через "
+        "приложение V2RayTUN."
+    ),
+    "android_tv_setup_no_key": (
+        "Для настройки VPN на Android TV:\n"
+        "1. На TV откройте Google Play и установите приложение Happ.\n"
+        "2. Оплатите тариф — ключ появится в профиле.\n"
+        "3. Повторите настройку через QR-код."
+    ),
+    "apple_tv_setup": (
+        "Для установки VPN на Apple TV:\n"
+        "1. На TV откройте App Store и установите приложение Happ.\n"
+        "2. Откройте Happ на TV — появится QR-код.\n"
+        "3. Откройте Happ на телефоне, нажмите кнопку QR-код и отсканируйте QR-код с TV.\n"
+        "4. На телефоне появится окно выбора ключей, выберите {brand} и нажмите Отправить.\n"
+        "5. На TV нажмите кнопку пропустить — на главной в Happ появятся локации и "
+        "кнопка включения.\n"
+        "6. Нажмите на нее и выдайте разрешение, чтобы подключиться к VPN.\n\n"
+        "Если у вас что-то не получается, попробуйте альтернативный способ настройки через "
+        "приложение Sing-box."
+    ),
+    "apple_tv_setup_no_key": (
+        "Для установки VPN на Apple TV:\n"
+        "1. На TV откройте App Store и установите приложение Happ.\n"
+        "2. Оплатите тариф — ключ появится в профиле.\n"
+        "3. Повторите настройку через QR-код."
     ),
     "generic_setup": (
         "Для настройки VPN на {device}:\n"
@@ -115,12 +234,11 @@ RU: Dict[str, str] = {
     "faq_main": "Выберите вопрос:",
     "faq_pro": "PRO включает максимальную скорость, стабильность и все функции.",
     "faq_broken": (
-        "Что-то не работает\n\n"
-        "1. Обновите ключ в приложении.\n"
-        "2. Переподключитесь.\n"
-        "3. Попробуйте альтернативный клиент (Happ или V2RayTUN).\n\n"
-        "Если проблема остаётся — напишите в поддержку: {support}."
+        "Вы открыли базу самопомощи, здесь вы можете самостоятельно найти решение своей проблемы.\n\n"
+        "Проверить работоспособность VPN можно на speedtest.net или check-host.net.\n\n"
+        "Если решить проблему не получилось, свяжитесь с нами в {support}."
     ),
+    "help_prompt": "Выберите раздел, который вас интересует:",
     "faq_about": (
         "{brand} — быстрый и безопасный VPN.\n"
         "Работаем на протоколе VLESS.\n"
@@ -163,37 +281,150 @@ EN: Dict[str, str] = {
     "steps_banner": "Connect in 3 steps",
     "android_setup": (
         "Android setup:\n"
-        "1. Install Happ: {happ_url}\n"
-        "2. Tap the button below to connect in 1 click.\n\n"
+        "1. Install Happ from Google Play {happ_url}{happ_apk_suffix}.\n"
+        "2. Tap the button below to connect in 1 click!\n\n"
         "If auto-setup fails:\n"
-        "1. Copy your key:\n"
+        "1. Copy your key by tapping it:\n"
         "{key}\n"
         "2. Open Happ and tap “Paste/From clipboard”.\n"
         "3. Choose a location and connect.\n\n"
-        "If it still fails, try V2RayTUN: {v2raytun_url}"
+        "If the app doesn't work, try V2RayTUN via the button."
     ),
     "android_setup_no_key": (
         "Android setup:\n"
-        "1. Install Happ: {happ_url}\n"
+        "1. Install Happ from Google Play {happ_url}{happ_apk_suffix}.\n"
         "2. Pay for a plan — the key will appear in your profile.\n"
         "3. Paste the key and connect.\n\n"
-        "If it still fails, try V2RayTUN: {v2raytun_url}"
+        "If the app doesn't work, try V2RayTUN via the button."
     ),
     "android_v2ray": (
-        "V2RayTUN setup:\n"
-        "1. Install V2RayTUN: {v2raytun_url}\n"
-        "2. Tap the button below to connect in 1 click.\n\n"
+        "Android setup (V2RayTUN):\n"
+        "1. Install V2RayTUN from Google Play or APK: {v2raytun_url}\n"
+        "2. Tap the button below to connect in 1 click!\n\n"
         "If auto-setup fails:\n"
-        "1. Copy your key:\n"
+        "1. Copy your key by tapping it:\n"
         "{key}\n"
-        "2. Open V2RayTUN, tap “+” and choose “Import from clipboard”.\n"
-        "3. Choose a location and connect."
+        "2. Open V2RayTUN, tap “+” in the top-right corner.\n"
+        "3. Choose “Import from clipboard”.\n"
+        "4. Pick a location and tap the blue button.\n"
+        "5. Allow the connection."
     ),
     "android_v2ray_no_key": (
-        "V2RayTUN setup:\n"
+        "Android setup (V2RayTUN):\n"
         "1. Install V2RayTUN: {v2raytun_url}\n"
         "2. Pay for a plan — the key will appear in your profile.\n"
         "3. Import the key and connect."
+    ),
+    "ios_setup": (
+        "iPhone setup:\n"
+        "1. Install Happ for Russia {happ_ios_url}{happ_ios_alt_suffix}.\n"
+        "2. Tap the button below to connect in 1 click!\n\n"
+        "If auto-setup fails:\n"
+        "1. Copy your key by tapping it:\n"
+        "{key}\n"
+        "2. Open Happ and tap “Paste/From clipboard”.\n"
+        "3. Choose a location and connect."
+    ),
+    "ios_setup_no_key": (
+        "iPhone setup:\n"
+        "1. Install Happ for Russia {happ_ios_url}{happ_ios_alt_suffix}.\n"
+        "2. Pay for a plan — the key will appear in your profile.\n"
+        "3. Paste the key and connect."
+    ),
+    "windows_setup": (
+        "Windows setup:\n"
+        "1. Download FlClash: {flclash_url}\n"
+        "2. Tap the button below to connect in 1 click!\n"
+        "3. Press ▶ in the lower-right corner to enable VPN. "
+        "Locations are available in Proxy.\n\n"
+        "If auto-setup fails:\n"
+        "1. Copy the key by tapping it:\n"
+        "{sub_url}\n"
+        "2. Open FlClash and go to Profiles.\n"
+        "3. Tap the plus in the lower corner and choose URL.\n"
+        "4. Paste the copied key.\n"
+        "5. Go to Proxy and choose a location.\n"
+        "6. Open Control panel and press ▶ in the lower-right corner to enable VPN."
+    ),
+    "windows_setup_no_key": (
+        "Windows setup:\n"
+        "1. Download FlClash: {flclash_url}\n"
+        "2. Pay for a plan — the key will appear in your profile.\n"
+        "3. Add the key to FlClash and connect."
+    ),
+    "macos_setup": (
+        "Macbook setup (2020+):\n"
+        "1. Install Happ for Russia {happ_ios_url}{happ_ios_alt_suffix}.\n"
+        "2. Tap the button below to connect in 1 click!\n\n"
+        "If auto-setup fails:\n"
+        "1. Copy your key by tapping it:\n"
+        "{key}\n"
+        "2. Open Happ and tap “Paste/From clipboard”.\n"
+        "3. Choose a location and connect.\n\n"
+        "If the app doesn't work or your Macbook is older than 2020, try Sing-box."
+    ),
+    "macos_setup_no_key": (
+        "Macbook setup (2020+):\n"
+        "1. Install Happ for Russia {happ_ios_url}{happ_ios_alt_suffix}.\n"
+        "2. Pay for a plan — the key will appear in your profile.\n"
+        "3. Paste the key and connect.\n\n"
+        "If the app doesn't work or your Macbook is older than 2020, try Sing-box."
+    ),
+    "linux_setup": (
+        "Linux setup:\n"
+        "1. Download FlClash: {flclash_url}\n"
+        "2. Tap the button below to connect in 1 click!\n\n"
+        "If auto-setup fails:\n"
+        "1. Copy the key by tapping it:\n"
+        "{sub_url}\n"
+        "2. Open FlClash and go to Profiles.\n"
+        "3. Tap the plus and choose URL.\n"
+        "4. Paste the copied key.\n"
+        "5. Go to Proxy and choose a location.\n"
+        "6. Open Control panel.\n"
+        "7. Ensure TUN is enabled and outbound mode is Global.\n"
+        "8. Press ▶ in the lower-right corner to enable VPN."
+    ),
+    "linux_setup_no_key": (
+        "Linux setup:\n"
+        "1. Download FlClash: {flclash_url}\n"
+        "2. Pay for a plan — the key will appear in your profile.\n"
+        "3. Add the key to FlClash and connect."
+    ),
+    "android_tv_setup": (
+        "If your TV has a USB port, using a mouse is easier.\n\n"
+        "1. On the TV, open Google Play and install Happ from Google Play "
+        "{happ_url}{happ_apk_suffix}.\n"
+        "2. Open Happ on the TV — you'll see a QR code.\n"
+        "3. Open Happ on your phone, tap QR code, and scan the TV QR code.\n"
+        "4. On the phone you'll see the key list, choose {brand} and tap Send.\n"
+        "5. On the TV, tap Skip — on the main screen you'll see locations and "
+        "a power button.\n"
+        "6. Tap it and grant permission to connect.\n\n"
+        "If this doesn't work, try the alternative setup via V2RayTUN."
+    ),
+    "android_tv_setup_no_key": (
+        "Android TV setup:\n"
+        "1. On the TV, open Google Play and install Happ.\n"
+        "2. Pay for a plan — the key will appear in your profile.\n"
+        "3. Repeat setup via QR code."
+    ),
+    "apple_tv_setup": (
+        "Apple TV setup:\n"
+        "1. On the TV, open the App Store and install Happ.\n"
+        "2. Open Happ on the TV — you'll see a QR code.\n"
+        "3. Open Happ on your phone, tap QR code, and scan the TV QR code.\n"
+        "4. On the phone you'll see the key list, choose {brand} and tap Send.\n"
+        "5. On the TV, tap Skip — on the main screen you'll see locations and "
+        "a power button.\n"
+        "6. Tap it and grant permission to connect.\n\n"
+        "If this doesn't work, try the alternative setup via Sing-box."
+    ),
+    "apple_tv_setup_no_key": (
+        "Apple TV setup:\n"
+        "1. On the TV, open the App Store and install Happ.\n"
+        "2. Pay for a plan — the key will appear in your profile.\n"
+        "3. Repeat setup via QR code."
     ),
     "generic_setup": (
         "Setup for {device}:\n"
@@ -249,12 +480,11 @@ EN: Dict[str, str] = {
     "faq_main": "Choose a question:",
     "faq_pro": "PRO includes maximum speed, stability, and all features.",
     "faq_broken": (
-        "Something doesn't work\n\n"
-        "1. Refresh the key in the app.\n"
-        "2. Reconnect.\n"
-        "3. Try an alternative client (Happ or V2RayTUN).\n\n"
-        "If the issue remains, contact support: {support}."
+        "You've opened the self-help base, where you can find a solution to your issue.\n\n"
+        "Check VPN status at speedtest.net or check-host.net.\n\n"
+        "If it didn't help, contact support: {support}."
     ),
+    "help_prompt": "Choose the section you need:",
     "faq_about": (
         "{brand} is a fast and secure VPN.\n"
         "We use the VLESS protocol.\n"

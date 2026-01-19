@@ -22,6 +22,13 @@ def _tg_url(handle: str) -> str:
     return f"https://t.me/{value}"
 
 
+def _check_button(lang: str) -> list[InlineKeyboardButton]:
+    if not CHECK_URL:
+        return []
+    text = "Check connection" if lang == "en" else "Проверить соединение"
+    return [InlineKeyboardButton(text=text, url=CHECK_URL)]
+
+
 def main_menu_kb(lang: str) -> ReplyKeyboardMarkup:
     if lang == "en":
         buttons = [
@@ -52,22 +59,33 @@ def device_kb(lang: str) -> InlineKeyboardMarkup:
             row = []
     if row:
         rows.append(row)
-    back_text = "Back to menu" if lang == "en" else "Назад в меню"
-    rows.append([InlineKeyboardButton(text=back_text, callback_data="menu")])
+    return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+def help_device_kb(lang: str) -> InlineKeyboardMarkup:
+    rows = []
+    devices = DEVICES_EN if lang == "en" else DEVICES_RU
+    titles = {code: title for code, title in devices}
+    order = ["android", "ios", "windows", "macos", "android_tv"]
+    row = []
+    for code in order:
+        title = titles.get(code)
+        if not title:
+            continue
+        row.append(InlineKeyboardButton(text=title, callback_data=f"device:{code}"))
+        if len(row) == 2:
+            rows.append(row)
+            row = []
+    if row:
+        rows.append(row)
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
 
 def android_actions_kb(lang: str, one_click_url: str) -> InlineKeyboardMarkup:
-    check_button = (
-        [InlineKeyboardButton(text="Check connection", url=CHECK_URL)]
-        if lang == "en" and CHECK_URL
-        else [InlineKeyboardButton(text="Проверить соединение", url=CHECK_URL)]
-        if CHECK_URL
-        else []
-    )
+    check_button = _check_button(lang)
     if lang == "en":
         rows = [
-            [InlineKeyboardButton(text="Connect in 1 click", url=one_click_url)],
+            [InlineKeyboardButton(text="Connect in 1 click!", url=one_click_url)],
             [InlineKeyboardButton(text="V2RayTUN", callback_data="android:v2ray")],
             [InlineKeyboardButton(text="Something doesn't work", callback_data="faq:broken")],
             [InlineKeyboardButton(text="Other devices", callback_data="menu")],
@@ -76,7 +94,7 @@ def android_actions_kb(lang: str, one_click_url: str) -> InlineKeyboardMarkup:
             rows.insert(2, check_button)
         return InlineKeyboardMarkup(inline_keyboard=rows)
     rows = [
-        [InlineKeyboardButton(text="Подключиться в 1 клик", url=one_click_url)],
+        [InlineKeyboardButton(text="Подключиться в 1 клик!", url=one_click_url)],
         [InlineKeyboardButton(text="V2RayTUN", callback_data="android:v2ray")],
         [InlineKeyboardButton(text="Что-то не работает", callback_data="faq:broken")],
         [InlineKeyboardButton(text="Другие устройства", callback_data="menu")],
@@ -86,24 +104,137 @@ def android_actions_kb(lang: str, one_click_url: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
 
-def v2ray_actions_kb(lang: str, v2ray_url: str) -> InlineKeyboardMarkup:
-    check_button = (
-        [InlineKeyboardButton(text="Check connection", url=CHECK_URL)]
-        if lang == "en" and CHECK_URL
-        else [InlineKeyboardButton(text="Проверить соединение", url=CHECK_URL)]
-        if CHECK_URL
-        else []
-    )
+def ios_actions_kb(lang: str, one_click_url: str) -> InlineKeyboardMarkup:
+    check_button = _check_button(lang)
     if lang == "en":
         rows = [
-            [InlineKeyboardButton(text="Connect in 1 click", url=v2ray_url)],
+            [InlineKeyboardButton(text="Connect in 1 click!", url=one_click_url)],
+            [InlineKeyboardButton(text="Something doesn't work", callback_data="faq:broken")],
+            [InlineKeyboardButton(text="Other devices", callback_data="menu")],
+        ]
+        if check_button:
+            rows.insert(1, check_button)
+        return InlineKeyboardMarkup(inline_keyboard=rows)
+    rows = [
+        [InlineKeyboardButton(text="Подключиться в 1 клик!", url=one_click_url)],
+        [InlineKeyboardButton(text="Что-то не работает", callback_data="faq:broken")],
+        [InlineKeyboardButton(text="Другие устройства", callback_data="menu")],
+    ]
+    if check_button:
+        rows.insert(1, check_button)
+    return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+def desktop_actions_kb(lang: str, one_click_url: str) -> InlineKeyboardMarkup:
+    check_button = _check_button(lang)
+    if lang == "en":
+        rows = [
+            [InlineKeyboardButton(text="Connect in 1 click!", url=one_click_url)],
+            [InlineKeyboardButton(text="Something doesn't work", callback_data="faq:broken")],
+            [InlineKeyboardButton(text="Other devices", callback_data="menu")],
+        ]
+        if check_button:
+            rows.insert(1, check_button)
+        return InlineKeyboardMarkup(inline_keyboard=rows)
+    rows = [
+        [InlineKeyboardButton(text="Подключиться в 1 клик!", url=one_click_url)],
+        [InlineKeyboardButton(text="Что-то не работает", callback_data="faq:broken")],
+        [InlineKeyboardButton(text="Другие устройства", callback_data="menu")],
+    ]
+    if check_button:
+        rows.insert(1, check_button)
+    return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+def macos_actions_kb(
+    lang: str,
+    one_click_url: str,
+    singbox_url: str,
+) -> InlineKeyboardMarkup:
+    check_button = _check_button(lang)
+    if lang == "en":
+        rows = [
+            [InlineKeyboardButton(text="Connect in 1 click!", url=one_click_url)],
+        ]
+        if singbox_url:
+            rows.append([InlineKeyboardButton(text="Sing-box", url=singbox_url)])
+        if check_button:
+            rows.append(check_button)
+        rows.extend(
+            [
+                [InlineKeyboardButton(text="Something doesn't work", callback_data="faq:broken")],
+                [InlineKeyboardButton(text="Other devices", callback_data="menu")],
+            ]
+        )
+        return InlineKeyboardMarkup(inline_keyboard=rows)
+    rows = [
+        [InlineKeyboardButton(text="Подключиться в 1 клик!", url=one_click_url)],
+    ]
+    if singbox_url:
+        rows.append([InlineKeyboardButton(text="Sing-box", url=singbox_url)])
+    if check_button:
+        rows.append(check_button)
+    rows.extend(
+        [
+            [InlineKeyboardButton(text="Что-то не работает", callback_data="faq:broken")],
+            [InlineKeyboardButton(text="Другие устройства", callback_data="menu")],
+        ]
+    )
+    return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+def android_tv_actions_kb(lang: str) -> InlineKeyboardMarkup:
+    if lang == "en":
+        rows = [
+            [InlineKeyboardButton(text="V2RayTUN", callback_data="android:v2ray")],
+            [InlineKeyboardButton(text="Something doesn't work", callback_data="faq:broken")],
+            [InlineKeyboardButton(text="Other devices", callback_data="menu")],
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=rows)
+    rows = [
+        [InlineKeyboardButton(text="V2RayTUN", callback_data="android:v2ray")],
+        [InlineKeyboardButton(text="Что-то не работает", callback_data="faq:broken")],
+        [InlineKeyboardButton(text="Другие устройства", callback_data="menu")],
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+def apple_tv_actions_kb(lang: str, singbox_url: str) -> InlineKeyboardMarkup:
+    if lang == "en":
+        rows = []
+        if singbox_url:
+            rows.append([InlineKeyboardButton(text="Sing-box", url=singbox_url)])
+        rows.extend(
+            [
+                [InlineKeyboardButton(text="Something doesn't work", callback_data="faq:broken")],
+                [InlineKeyboardButton(text="Other devices", callback_data="menu")],
+            ]
+        )
+        return InlineKeyboardMarkup(inline_keyboard=rows)
+    rows = []
+    if singbox_url:
+        rows.append([InlineKeyboardButton(text="Sing-box", url=singbox_url)])
+    rows.extend(
+        [
+            [InlineKeyboardButton(text="Что-то не работает", callback_data="faq:broken")],
+            [InlineKeyboardButton(text="Другие устройства", callback_data="menu")],
+        ]
+    )
+    return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+def v2ray_actions_kb(lang: str, v2ray_url: str) -> InlineKeyboardMarkup:
+    check_button = _check_button(lang)
+    if lang == "en":
+        rows = [
+            [InlineKeyboardButton(text="Connect in 1 click!", url=v2ray_url)],
         ]
         if check_button:
             rows.append(check_button)
         rows.append([InlineKeyboardButton(text="Back", callback_data="device:android")])
         return InlineKeyboardMarkup(inline_keyboard=rows)
     rows = [
-        [InlineKeyboardButton(text="Подключиться в 1 клик", url=v2ray_url)],
+        [InlineKeyboardButton(text="Подключиться в 1 клик!", url=v2ray_url)],
     ]
     if check_button:
         rows.append(check_button)

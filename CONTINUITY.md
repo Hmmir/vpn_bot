@@ -1,8 +1,9 @@
 - Goal (incl. success criteria):
-  - Deliver Lagom VPN Pro Telegram bot (@lagvpnbot) with onboarding, device setup, tariffs, profile, FAQ, referral, RU/EN, media cards, automated expiry reminders, support bot + channel integration, and confirm production readiness for real users.
+  - Match competitor install + 1‑click flows (from `C:\Users\alien\Desktop\VPN\photovpn`) using our data only; ensure new-message behavior and self-help flow align with screenshots without changing assets.
 - Constraints/Assumptions:
   - Keep secrets out of git; use `.env` on server.
   - Use user-provided screenshots/copy; match competitor flow (2-column buttons) but rephrase branding.
+  - Do not change assets unless explicitly requested.
   - Payments/key issuance are placeholders until provided.
 - Key decisions:
   - Aiogram v3 bot; SQLite storage at `data/bot.db`; hourly reminder loop.
@@ -10,6 +11,9 @@
   - Support bot: `@GetniusSupport_bot`, channel: `https://t.me/genialvpn`, admin ID: `5795082902`.
   - Branding defaults: `Lagom VPN Pro` and `@lagvpnbot`.
   - Manual testing now; planned payment provider: YooMoney.
+  - Device install screens now send new messages (no edit-in-place) to match competitor flow.
+  - 1-click links now support app deep links wrapped via `DEEPLINK_REDIRECT_URL`; per-device copy updated to match screenshots.
+  - If no public domain is available, `DEEPLINK_REDIRECT_URL` stays empty and direct app deeplinks are used.
 - State:
   - Done:
     - Added media cards (welcome/pricing/pro/referral/steps) and updated bot flows to send images.
@@ -43,13 +47,27 @@
     - Removed visible menu-open message; reply keyboard still shown via welcome message.
     - Added V2RayA link option for macOS/Linux (`V2RAYA_URL`) and pushed commit `fbeb704`.
     - Guarded message edits against “message is not modified” errors.
+    - Updated install texts and per-device keyboards to match competitor screenshots.
+    - Added deep-link helpers for Happ/FlClash/V2RayTUN + optional redirect wrapper.
+    - Removed device menu "Back" row and switched device selection to send new messages.
+    - Added new envs for redirect + client links (Happ iOS/APK, FlClash, Sing-box).
+    - Added self-help flow for “Что-то не работает” with device picker.
+    - Added webhook redirect endpoint `/api/v1/redirect_dl` for deeplink wrapping.
+    - Set default app link values in config and `.env.example`.
+    - Left `DEEPLINK_REDIRECT_URL` empty in `.env.example` to avoid broken redirects by default.
   - Now:
     - Systemd units installed; main/support/webhook services running on server.
     - Rotate bot tokens (posted in chat) and update `.env` on server.
     - Pull latest changes on server (commit `fbeb704`) and restart bot(s).
     - Configure `.env` on server with `XUI_INBOUND_IDS`, `CHECK_URL`, XUI timeout, healthcheck/updatecheck vars.
-    - Replace bot media assets with new minimalistic images from `C:\\Users\\alien\\Desktop\\VPN\\photovpn`.
     - Update client links for macOS/Linux in `.env` (V2rayA) if desired.
+    - Fill new envs: `DEEPLINK_REDIRECT_URL`, `HAPP_IOS_URL`, `HAPP_IOS_ALT_URL`, `HAPP_APK_URL`, `FLCLASH_URL`, `SINGBOX_URL` (use our data; user doesn’t know values).
+    - Deploy webhook change if using redirect endpoint.
+    - User doesn’t know public domain for redirect; proceed without `DEEPLINK_REDIRECT_URL` unless provided.
+    - User asked for server code; provide minimal systemd + nginx setup snippet for webhook/redirect.
+    - User asked for exact server update commands (git pull + .env + restart services).
+    - User reports server still running old code; need to verify service path/commit and restart.
+    - Server currently on commit `232afae` (matches origin/main); local changes are uncommitted and must be pushed before server can pull.
     - User reports server behavior unchanged; need to verify deploy (git pull + restart) and commit hash.
     - User reports a button not working; need platform + button name + logs.
   - Next:
@@ -58,6 +76,7 @@
     - Support bot token, support admin chat ID (if different from admin ID).
     - Final pricing, trial duration, renewal URL, YooMoney webhook format/signature.
     - Which exact button fails (device select vs 1-click), on which platform, and what happens on tap.
+    - Public domain or IP for redirect endpoint (optional; only if https redirect is required).
     - What exactly looks unchanged after deploy (device selection flow, menu line, or something else).
 - Working set (files/ids/commands):
-  - `src/main.py`, `src/texts.py`, `src/keyboards.py`, `src/support_bot.py`, `src/issue.py`, `src/ops/*`, `.env.example`, `deploy/systemd/*`, `AUDIT.md`
+  - `src/main.py`, `src/texts.py`, `src/keyboards.py`, `src/config.py`, `src/webhook.py`, `.env.example`

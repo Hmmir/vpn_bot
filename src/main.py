@@ -12,13 +12,19 @@ from aiogram.types import Message, CallbackQuery, InputMediaPhoto
 from .config import (
     BOT_TOKEN,
     BOT_USERNAME,
+    DEEPLINK_REDIRECT_URL,
     ONE_CLICK_URL,
     V2RAY_URL,
     HAPP_URL,
+    HAPP_APK_URL,
+    HAPP_IOS_URL,
+    HAPP_IOS_ALT_URL,
     V2RAYTUN_URL,
+    FLCLASH_URL,
     V2RAYN_URL,
     V2RAYA_URL,
     IOS_V2RAYTUN_URL,
+    SINGBOX_URL,
     ROUTER_URL,
     DEFAULT_KEY,
     SUBSCRIPTION_URL,
@@ -29,7 +35,13 @@ from .config import (
 from .keyboards import (
     main_menu_kb,
     device_kb,
+    help_device_kb,
     android_actions_kb,
+    ios_actions_kb,
+    desktop_actions_kb,
+    macos_actions_kb,
+    android_tv_actions_kb,
+    apple_tv_actions_kb,
     v2ray_actions_kb,
     plans_kb,
     faq_kb,
@@ -92,6 +104,53 @@ def v2raytun_deeplink(sub_url: str) -> str:
     if not sub_url:
         return ""
     return f"v2raytun://import/{quote(sub_url, safe='')}"
+
+
+def happ_deeplink(sub_url: str) -> str:
+    if not sub_url:
+        return ""
+    return f"happ://add/{quote(sub_url, safe='')}"
+
+
+def flclash_deeplink(sub_url: str) -> str:
+    if not sub_url:
+        return ""
+    return f"flclash://install-config?url={quote(sub_url, safe='')}"
+
+
+def redirect_deeplink(deeplink: str) -> str:
+    if not deeplink:
+        return ""
+    if not DEEPLINK_REDIRECT_URL:
+        return deeplink
+    encoded = quote(deeplink, safe="")
+    if "{url}" in DEEPLINK_REDIRECT_URL:
+        return DEEPLINK_REDIRECT_URL.format(url=encoded)
+    return f"{DEEPLINK_REDIRECT_URL}{encoded}"
+
+
+def build_one_click_url(deeplink: str, fallback_url: str) -> str:
+    if not deeplink:
+        return fallback_url
+    if deeplink.startswith(("http://", "https://")):
+        return deeplink
+    return redirect_deeplink(deeplink)
+
+
+def happ_apk_suffix(lang: str) -> str:
+    if not HAPP_APK_URL:
+        return ""
+    return f" or APK file {HAPP_APK_URL}" if lang == "en" else f" или «APK-файл» {HAPP_APK_URL}"
+
+
+def happ_ios_alt_suffix(lang: str) -> str:
+    if not HAPP_IOS_ALT_URL:
+        return ""
+    return (
+        f" (Happ for other regions {HAPP_IOS_ALT_URL})"
+        if lang == "en"
+        else f" (Happ для других регионов {HAPP_IOS_ALT_URL})"
+    )
 
 
 def get_lang(user_id: int) -> str:
@@ -208,7 +267,7 @@ async def cmd_start(message: Message) -> None:
     await send_asset(
         message,
         "welcome",
-        t(lang, "welcome_text"),
+        None,
         reply_markup=main_menu_kb(lang),
     )
     await message.answer(t(lang, "device_prompt"), reply_markup=device_kb(lang))
@@ -319,8 +378,7 @@ async def switch_to_russian(message: Message) -> None:
 async def cb_menu(callback: CallbackQuery) -> None:
     lang = get_lang(callback.from_user.id)
     upsert_user(callback.from_user.id, lang)
-    await edit_text_message(
-        callback.message,
+    await callback.message.answer(
         t(lang, "device_prompt"),
         reply_markup=device_kb(lang),
     )
@@ -333,33 +391,100 @@ async def cb_device(callback: CallbackQuery) -> None:
     upsert_user(callback.from_user.id, lang)
     code = callback.data.split(":", 1)[1]
     key, sub_url = get_user_key_from_db(callback.from_user.id)
+    has_key = bool(key)
+    sub_url = sub_url or SUBSCRIPTION_URL
+    apk_suffix = happ_apk_suffix(lang)
+    ios_alt_suffix = happ_ios_alt_suffix(lang)
     if code == "android":
-        has_key = bool(key)
-        one_click = sub_url or SUBSCRIPTION_URL or ONE_CLICK_URL
-        await edit_text_message(
-            callback.message,
-            t(
-                lang,
-                "android_setup" if has_key else "android_setup_no_key",
-                key=key,
-                happ_url=HAPP_URL,
-                v2raytun_url=V2RAYTUN_URL,
-            ),
-            reply_markup=android_actions_kb(lang, one_click) if has_key else plans_kb(lang),
+        one_click = build_one_click_url(
+            happ_deeplink(sub_url),
+            sub_url or ONE_CLICK_URL,
         )
+        text = t(
+            lang,
+            "android_setup" if has_key else "android_setup_no_key",
+            key=key,
+            happ_url=HAPP_URL,
+            happ_apk_suffix=apk_suffix,
+        )
+        reply_markup = android_actions_kb(lang, one_click) if has_key else plans_kb(lang)
+    elif code == "ios":
+        one_click = build_one_click_url(
+            happ_deeplink(sub_url),
+            sub_url or ONE_CLICK_URL,
+        )
+        text = t(
+            lang,
+            "ios_setup" if has_key else "ios_setup_no_key",
+            key=key,
+            happ_ios_url=HAPP_IOS_URL,
+            happ_ios_alt_suffix=ios_alt_suffix,
+        )
+        reply_markup = ios_actions_kb(lang, one_click) if has_key else plans_kb(lang)
+    elif code == "windows":
+        one_click = build_one_click_url(
+            flclash_deeplink(sub_url),
+            sub_url or ONE_CLICK_URL,
+        )
+        text = t(
+            lang,
+            "windows_setup" if has_key else "windows_setup_no_key",
+            flclash_url=FLCLASH_URL,
+            sub_url=sub_url,
+        )
+        reply_markup = desktop_actions_kb(lang, one_click) if has_key else plans_kb(lang)
+    elif code == "macos":
+        one_click = build_one_click_url(
+            happ_deeplink(sub_url),
+            sub_url or ONE_CLICK_URL,
+        )
+        text = t(
+            lang,
+            "macos_setup" if has_key else "macos_setup_no_key",
+            key=key,
+            happ_ios_url=HAPP_IOS_URL,
+            happ_ios_alt_suffix=ios_alt_suffix,
+        )
+        reply_markup = (
+            macos_actions_kb(lang, one_click, SINGBOX_URL) if has_key else plans_kb(lang)
+        )
+    elif code == "linux":
+        one_click = build_one_click_url(
+            flclash_deeplink(sub_url),
+            sub_url or ONE_CLICK_URL,
+        )
+        text = t(
+            lang,
+            "linux_setup" if has_key else "linux_setup_no_key",
+            flclash_url=FLCLASH_URL,
+            sub_url=sub_url,
+        )
+        reply_markup = desktop_actions_kb(lang, one_click) if has_key else plans_kb(lang)
+    elif code == "android_tv":
+        text = t(
+            lang,
+            "android_tv_setup" if has_key else "android_tv_setup_no_key",
+            happ_url=HAPP_URL,
+            happ_apk_suffix=apk_suffix,
+        )
+        reply_markup = android_tv_actions_kb(lang) if has_key else plans_kb(lang)
+    elif code == "apple_tv":
+        text = t(
+            lang,
+            "apple_tv_setup" if has_key else "apple_tv_setup_no_key",
+        )
+        reply_markup = apple_tv_actions_kb(lang, SINGBOX_URL) if has_key else plans_kb(lang)
     else:
         devices = DEVICES_EN if lang == "en" else DEVICES_RU
         device_title = dict(devices).get(code, code)
-        await edit_text_message(
-            callback.message,
-            t(
-                lang,
-                "generic_setup" if key else "generic_setup_no_key",
-                device=device_title,
-                client_line=client_line(lang, code),
-            ),
-            reply_markup=plans_kb(lang) if not key else None,
+        text = t(
+            lang,
+            "generic_setup" if has_key else "generic_setup_no_key",
+            device=device_title,
+            client_line=client_line(lang, code),
         )
+        reply_markup = plans_kb(lang) if not has_key else None
+    await callback.message.answer(text, reply_markup=reply_markup)
     await callback.answer()
 
 
@@ -369,15 +494,14 @@ async def cb_android_v2ray(callback: CallbackQuery) -> None:
     upsert_user(callback.from_user.id, lang)
     key, sub_url = get_user_key_from_db(callback.from_user.id)
     has_key = bool(key)
-    deeplink = v2raytun_deeplink(sub_url or SUBSCRIPTION_URL)
-    one_click = deeplink or V2RAY_URL or sub_url
-    await edit_text_message(
-        callback.message,
+    sub_url = sub_url or SUBSCRIPTION_URL
+    deeplink = v2raytun_deeplink(sub_url)
+    one_click = build_one_click_url(deeplink, V2RAY_URL or sub_url)
+    await callback.message.answer(
         t(
             lang,
             "android_v2ray" if has_key else "android_v2ray_no_key",
             key=key,
-            happ_url=HAPP_URL,
             v2raytun_url=V2RAYTUN_URL,
         ),
         reply_markup=v2ray_actions_kb(lang, one_click) if has_key else plans_kb(lang),
@@ -390,6 +514,14 @@ async def cb_faq(callback: CallbackQuery) -> None:
     lang = get_lang(callback.from_user.id)
     upsert_user(callback.from_user.id, lang)
     code = callback.data.split(":", 1)[1]
+    if code == "broken":
+        await callback.message.answer(t(lang, "faq_broken"))
+        await callback.message.answer(
+            t(lang, "help_prompt"),
+            reply_markup=help_device_kb(lang),
+        )
+        await callback.answer()
+        return
     text = t(lang, f"faq_{code}")
     if not text:
         text = t(lang, "faq_main")

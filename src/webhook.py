@@ -1,6 +1,7 @@
 import asyncio
 import logging
 from typing import Any, Optional
+from urllib.parse import unquote, urlparse
 
 from aiohttp import web
 from aiogram import Bot
@@ -14,6 +15,7 @@ logging.basicConfig(level=logging.INFO)
 WEBHOOK_TOKEN = ""
 WEBHOOK_BIND = "127.0.0.1"
 WEBHOOK_PORT = 8080
+ALLOWED_REDIRECT_SCHEMES = {"happ", "v2raytun", "flclash"}
 
 
 def load_env() -> None:
@@ -78,9 +80,25 @@ async def handle_payment(request: web.Request) -> web.Response:
     return web.json_response({"ok": True})
 
 
+def _is_allowed_redirect(value: str) -> bool:
+    parsed = urlparse(value)
+    return parsed.scheme in ALLOWED_REDIRECT_SCHEMES
+
+
+async def handle_redirect(request: web.Request) -> web.Response:
+    target = request.query.get("url", "")
+    if not target:
+        return web.json_response({"ok": False, "error": "missing url"}, status=400)
+    target = unquote(target)
+    if not _is_allowed_redirect(target):
+        return web.json_response({"ok": False, "error": "invalid scheme"}, status=400)
+    raise web.HTTPFound(location=target)
+
+
 async def init_app() -> web.Application:
     load_env()
     app = web.Application()
+    app.router.add_get("/api/v1/redirect_dl", handle_redirect)
     app.router.add_post("/payment/paid", handle_payment)
     return app
 
