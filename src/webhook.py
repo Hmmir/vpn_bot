@@ -1,4 +1,7 @@
 import asyncio
+import hashlib
+import hmac
+import json
 import logging
 from typing import Any, Optional
 from urllib.parse import unquote, urlparse
@@ -16,15 +19,72 @@ WEBHOOK_TOKEN = ""
 WEBHOOK_BIND = "127.0.0.1"
 WEBHOOK_PORT = 8080
 ALLOWED_REDIRECT_SCHEMES = {"happ", "v2raytun", "flclash"}
+TRIBUTE_API_KEY = ""
+TRIBUTE_DEFAULT_PLAN = "trial"
+TRIBUTE_PRODUCT_MAP: dict[str, str] = {}
 
 
 def load_env() -> None:
     global WEBHOOK_TOKEN, WEBHOOK_BIND, WEBHOOK_PORT
+    global TRIBUTE_API_KEY, TRIBUTE_DEFAULT_PLAN, TRIBUTE_PRODUCT_MAP
     from .config import _get_env  # local import to avoid circular init
 
     WEBHOOK_TOKEN = _get_env("WEBHOOK_TOKEN", "")
     WEBHOOK_BIND = _get_env("WEBHOOK_BIND", "127.0.0.1")
     WEBHOOK_PORT = int(_get_env("WEBHOOK_PORT", "8080") or "8080")
+    TRIBUTE_API_KEY = _get_env("TRIBUTE_API_KEY", "")
+    TRIBUTE_DEFAULT_PLAN = _get_env("TRIBUTE_DEFAULT_PLAN", "trial") or "trial"
+    TRIBUTE_PRODUCT_MAP = _parse_plan_map(_get_env("TRIBUTE_PRODUCT_MAP", ""))
+
+
+def _parse_plan_map(raw: str) -> dict[str, str]:
+    mapping: dict[str, str] = {}
+    for part in (raw or "").split(","):
+        part = part.strip()
+        if not part:
+            continue
+        key, sep, value = part.partition(":")
+        if not sep:
+            continue
+        key = key.strip()
+        value = value.strip()
+        if key and value:
+            mapping[key] = value
+    return mapping
+
+
+def _verify_tribute_signature(raw: bytes, signature: str) -> bool:
+    if not TRIBUTE_API_KEY:
+        return True
+    if not signature:
+        return False
+    expected = hmac.new(TRIBUTE_API_KEY.encode(), raw, hashlib.sha256).hexdigest()
+    return hmac.compare_digest(expected, signature)
+
+
+def _extract_tribute_user_id(payload: dict[str, Any]) -> Optional[int]:
+    for key in ("telegram_user_id", "telegramUserId", "telegram_user", "user_id"):
+        value = payload.get(key)
+        if value is None:
+            continue
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            continue
+    return None
+
+
+def extract_tribute_payment(data: dict[str, Any]) -> tuple[Optional[int], str]:
+    payload = data.get("payload") if isinstance(data.get("payload"), dict) else {}
+    user_id = _extract_tribute_user_id(payload) or _extract_tribute_user_id(data)
+    product_id = (
+        payload.get("product_id")
+        or payload.get("digital_product_id")
+        or payload.get("product")
+        or data.get("product_id")
+    )
+    plan_code = TRIBUTE_PRODUCT_MAP.get(str(product_id), TRIBUTE_DEFAULT_PLAN)
+    return user_id, plan_code
 
 
 def extract_payment(data: dict[str, Any]) -> Optional[tuple[int, str]]:
@@ -80,6 +140,39 @@ async def handle_payment(request: web.Request) -> web.Response:
     return web.json_response({"ok": True})
 
 
+async def handle_tribute(request: web.Request) -> web.Response:
+    raw = await request.read()
+    signature = request.headers.get("trbt-signature", "")
+    if not _verify_tribute_signature(raw, signature):
+        return web.json_response({"ok": False, "error": "unauthorized"}, status=401)
+    try:
+        data = json.loads(raw.decode("utf-8"))
+    except json.JSONDecodeError:
+        return web.json_response({"ok": False, "error": "invalid json"}, status=400)
+
+    user_id, plan_code = extract_tribute_payment(data)
+    if not user_id:
+        return web.json_response({"ok": False, "error": "missing telegram_user_id"}, status=400)
+    try:
+        key = await issue_access(user_id, plan_code)
+    except Exception as exc:
+        logging.exception("Issue access failed")
+        return web.json_response({"ok": False, "error": str(exc)}, status=500)
+
+    if BOT_TOKEN:
+        bot = Bot(BOT_TOKEN)
+        await bot.send_message(
+            user_id,
+            "گ?گُگ>گّ‘'گّ گُگ?গ?‘'گ?গç‘?گگ?گçগ?গّ. گ'গ?‘' গ?গّ‘? গ?গ?‘?‘'‘?गُ:\n\n"
+            f"گ?গ>‘?‘ط:\n{key.vless_uri}\n\n"
+            f"گ?گ?গ?গُগٌ‘?গَগّ:\n{key.sub_url}\n\n"
+            "گ?গّগग?গٌ‘'গç গ?গّ گَগ>‘?‘ط, ‘ط‘'গ?গ+‘< ‘?গَগ?গُগٌ‘?গ?গ?গّ‘'‘?.",
+        )
+        await bot.session.close()
+
+    return web.json_response({"ok": True})
+
+
 def _is_allowed_redirect(value: str) -> bool:
     parsed = urlparse(value)
     return parsed.scheme in ALLOWED_REDIRECT_SCHEMES
@@ -100,6 +193,7 @@ async def init_app() -> web.Application:
     app = web.Application()
     app.router.add_get("/api/v1/redirect_dl", handle_redirect)
     app.router.add_post("/payment/paid", handle_payment)
+    app.router.add_post("/payment/tribute", handle_tribute)
     return app
 
 

@@ -26,6 +26,11 @@ RU: Dict[str, str] = {
         "Меню находится в клавиатуре (☰) — выберите нужный раздел или сразу установите VPN."
     ),
     "device_prompt": "Выберите ваше устройство:",
+    "paywall_device": (
+        "Для подключения нужен ключ.\n"
+        "Оплатите пробный доступ {trial_days} дней за {trial_price} — ключ появится в профиле.\n"
+        "После оплаты снова выберите устройство."
+    ),
     "steps_banner": "Подключение в 3 шага",
     "android_setup": (
         "Для настройки VPN на Android:\n"
@@ -336,6 +341,11 @@ EN: Dict[str, str] = {
         "Paste the key into the app and choose a location."
     ),
     "device_prompt": "Select your device:",
+    "paywall_device": (
+        "A key is required to connect.\n"
+        "Pay for the trial access ({trial_days} days for {trial_price}) — the key will appear in your profile.\n"
+        "After payment, choose your device again."
+    ),
     "steps_banner": "Connect in 3 steps",
     "android_setup": (
         "Android setup:\n"

@@ -414,8 +414,19 @@ async def cb_device(callback: CallbackQuery) -> None:
     lang = get_lang(callback.from_user.id)
     upsert_user(callback.from_user.id, lang)
     code = callback.data.split(":", 1)[1]
-    key, sub_url = get_user_key(callback.from_user.id)
-    sub_url = sub_url or SUBSCRIPTION_URL
+    stored_key, stored_sub = get_user_key_from_db(callback.from_user.id)
+    if not stored_key:
+        await edit_text_message(
+            callback.message,
+            t(lang, "paywall_device"),
+            reply_markup=plans_kb(lang, include_menu=True),
+            parse_mode="HTML",
+            disable_web_page_preview=True,
+        )
+        await callback.answer()
+        return
+    key = stored_key
+    sub_url = stored_sub or SUBSCRIPTION_URL
     apk_suffix = happ_apk_suffix(lang)
     ios_alt_suffix = happ_ios_alt_suffix(lang)
     key_link = html_link(key, key)
@@ -545,8 +556,18 @@ async def cb_device(callback: CallbackQuery) -> None:
 async def cb_android_v2ray(callback: CallbackQuery) -> None:
     lang = get_lang(callback.from_user.id)
     upsert_user(callback.from_user.id, lang)
-    _, sub_url = get_user_key(callback.from_user.id)
-    sub_url = sub_url or SUBSCRIPTION_URL
+    stored_key, stored_sub = get_user_key_from_db(callback.from_user.id)
+    if not stored_key:
+        await edit_text_message(
+            callback.message,
+            t(lang, "paywall_device"),
+            reply_markup=plans_kb(lang, include_menu=True),
+            parse_mode="HTML",
+            disable_web_page_preview=True,
+        )
+        await callback.answer()
+        return
+    sub_url = stored_sub or SUBSCRIPTION_URL
     deeplink = v2raytun_deeplink(sub_url)
     one_click = build_one_click_url(deeplink, V2RAY_URL or sub_url)
     sub_url_link = html_link(sub_url, sub_url)

@@ -21,7 +21,7 @@ PLANS = [
         title_en="Trial period",
         price_ru="7 дней (спишем 25 руб)",
         price_en="7 days (25 RUB card check)",
-        pay_url="https://example.com/pay/trial",
+        pay_url="https://t.me/tribute/app?startapp=ppNO",
     ),
     Plan(
         code="1m",
